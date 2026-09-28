@@ -108,8 +108,6 @@ with st.sidebar:
     st.caption("Select a shorter range for faster detector previews.")
 hours = days * 24
 token = dataset_token(hours)
-with st.spinner("Loading mission streams…"):
-    data = load_data(hours, token)
 run_key = (hours, token)
 if st.session_state.get("run_key") != run_key:
     st.session_state["run_key"] = run_key
@@ -117,9 +115,20 @@ if st.session_state.get("run_key") != run_key:
     st.session_state["scenario"] = "E1"
 elif st.session_state.get("result") is None:
     st.session_state["result"] = load_nominal_preview(hours, token)
+pending_scenario = st.session_state.pop("pending_scenario", None)
+if pending_scenario is not None:
+    with st.spinner(
+        f"Running {pending_scenario}: nominal-only training, then full-resolution rules + IF…"
+    ):
+        output = detect(hours, token, pending_scenario)
+        if pending_scenario == "E1":
+            save_nominal_preview(hours, token, output)
+    st.session_state["result"] = output
+    st.session_state["scenario"] = pending_scenario
 scenario = st.session_state.get("scenario", "E1")
 result = st.session_state.get("result")
-view = chart_data(hours, token, scenario)
+with st.spinner("Loading mission streams…"):
+    view = chart_data(hours, token, scenario)
 with st.sidebar:
     st.divider()
     st.html('<div class="eyebrow">DATA MANIFEST / UTC</div>')
@@ -158,15 +167,9 @@ def plot(fig, key):
 
 
 def run(scenario_name):
-    with st.spinner(
-        f"Running {scenario_name}: nominal-only training, then full-resolution rules + IF…"
-    ):
-        output = detect(hours, token, scenario_name)
-        if scenario_name == "E1":
-            save_nominal_preview(hours, token, output)
-    st.session_state["result"] = output
-    st.session_state["scenario"] = scenario_name
-    st.rerun()
+    # Widget callbacks run before the script: process once before charts are built.
+    st.session_state["pending_scenario"] = scenario_name
+    st.session_state["mission_tabs"] = "SCENARIOS E1–E6"
 
 
 def kpi(label, value, foot, series=(), icon="◈"):
@@ -295,10 +298,13 @@ if tabs[0].open:
                 st.html(
                     '<div class="card" style="min-height:215px"><div class="eyebrow">DETECTION STATUS</div><h2>Awaiting detector run</h2><p>Execute the existing rules and nominal-trained Isolation Forest to inspect actual alerts.</p><span class="chip">NO PLACEHOLDER SCORES</span></div>'
                 )
-            if st.button(
-                "Run nominal detector preview", type="primary", width="stretch"
-            ):
-                run("E1")
+            st.button(
+                "Run nominal detector preview",
+                type="primary",
+                width="stretch",
+                on_click=run,
+                args=("E1",),
+            )
             st.caption(
                 "First run takes longer; repeated runs are cached. Full dataset is retained for detection."
             )
@@ -519,8 +525,7 @@ if tabs[6].open:
             with b:
                 st.caption(f"IMPLEMENTED · {coverage}")
             with c:
-                if st.button(f"Run {code}", key=f"run_{code}"):
-                    run(code)
+                st.button(f"Run {code}", key=f"run_{code}", on_click=run, args=(code,))
         st.info(
             "Preview only: training uses the untouched nominal baseline. Formal held-out scenario metrics require evaluation validation; no performance claims are displayed."
         )

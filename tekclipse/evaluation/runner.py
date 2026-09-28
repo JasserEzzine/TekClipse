@@ -57,12 +57,12 @@ def evaluate_scenario(scenario_name: str, data: dict):
     threshold = float(np.quantile(train_scores, 1 - cfg["model"]["isolation_forest"]["contamination"]))
 
     rule_alerts = detect_rule_alerts(data["commands"], telemetry=data["telemetry"], network=data["network"], events=data["system_events"])
-    ml_alerts = compute_ml_alerts(model, test_features[ml_cols].copy(), threshold)
+    ml_alerts = compute_ml_alerts(model, test_features[["timestamp", *ml_cols]].copy(), threshold)
     alerts = rule_alerts + ml_alerts
 
     # ground truth is encoded as a set of onset timestamps from the injection helper
     ground_truth = get_scenario(scenario_name)(data)[1]
-    onset = pd.Timestamp(ground_truth[0][0], tz="UTC") if ground_truth else None
+    onset = pd.to_datetime(ground_truth[0][0], utc=True) if ground_truth else None
     valid_alert_times = []
     for alert in alerts:
         ts = pd.to_datetime(alert.get("timestamp"), utc=True, errors="coerce")
@@ -76,7 +76,7 @@ def evaluate_scenario(scenario_name: str, data: dict):
     tn = 0
     if ground_truth:
         for gt_ts, _ in ground_truth:
-            gt_time = pd.Timestamp(gt_ts, tz="UTC")
+            gt_time = pd.to_datetime(gt_ts, utc=True)
             if any(a >= gt_time for a in valid_alert_times):
                 tp += 1
             else:

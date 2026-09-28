@@ -2,6 +2,9 @@
 
 import json
 import hashlib
+from functools import wraps
+from tempfile import NamedTemporaryFile
+from threading import Lock
 from pathlib import Path
 from time import perf_counter
 
@@ -21,6 +24,19 @@ from tekclipse.pipeline.rules import detect_rule_alerts
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "generated"
 ALERT_COLUMNS = ["timestamp", "source", "severity", "description", "score"]
+_DETECTION_LOCK = Lock()
+_PREVIEW_LOCK = Lock()
+
+
+def serialized_detector(function):
+    """Bound model-training memory: one uncached detector job per server process."""
+
+    @wraps(function)
+    def guarded(*args, **kwargs):
+        with _DETECTION_LOCK:
+            return function(*args, **kwargs)
+
+    return guarded
 
 
 def _detector_signature():
@@ -50,16 +66,32 @@ def save_nominal_preview(hours: int, token: str, result: dict):
         result=payload,
     )
     path = DATA_DIR / "nominal_preview.json"
-    temporary = path.with_suffix(".tmp")
-    temporary.write_text(json.dumps(document, default=str), encoding="utf-8")
-    temporary.replace(path)
+    # Separate temporary files prevent two sessions from clobbering one writer.
+    temporary = None
+    try:
+        with NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=DATA_DIR,
+            prefix="nominal-preview-",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            json.dump(document, handle, default=str)
+        with _PREVIEW_LOCK:
+            temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
     return path
 
 
 def load_nominal_preview(hours: int, token: str):
     path = DATA_DIR / "nominal_preview.json"
     try:
-        document = json.loads(path.read_text(encoding="utf-8"))
+        with _PREVIEW_LOCK:
+            document = json.loads(path.read_text(encoding="utf-8"))
         if (
             document["hours"] != hours
             or document["token"] != token
@@ -96,7 +128,7 @@ def dataset_token(hours: int) -> str:
             and all((DATA_DIR / f"{name}.csv").exists() for name in SOURCES)
             and (DATA_DIR / "dataset.sqlite").exists()
         )
-    except (OSError, ValueError, KeyError):
+    except (OSError, ValueError, KeyError, TypeError):
         valid = False
     if not valid:
         with st.spinner(
@@ -139,7 +171,8 @@ def load_data(hours: int, token: str) -> dict:
     return data
 
 
-@st.cache_data(max_entries=8, show_spinner=False)
+@st.cache_data(max_entries=16, show_spinner=False)
+@serialized_detector
 def detect(hours: int, token: str, scenario: str) -> dict:
     """Use unchanged public detectors; train only on the separate nominal baseline.
 
@@ -148,6 +181,7 @@ def detect(hours: int, token: str, scenario: str) -> dict:
     the nominal training timeline. This is not a held-out performance evaluation.
     """
     started = perf_counter()
+    get_scenario(scenario)  # Reject invalid scenario names before any expensive work.
     nominal = load_data(hours, token)
     train, _, cols = prepare_nominal_split(nominal)
     train_features = _feature_matrix(train, cols).select_dtypes(include="number")

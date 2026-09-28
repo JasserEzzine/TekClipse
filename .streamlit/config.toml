@@ -8,6 +8,14 @@ font = "sans serif"
 
 [server]
 headless = true
+enableCORS = true
+enableXsrfProtection = true
+enableStaticServing = false
+maxUploadSize = 1
+
+[client]
+showErrorDetails = "none"
+toolbarMode = "viewer"
 
 [browser]
 gatherUsageStats = false

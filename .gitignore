@@ -14,3 +14,11 @@ results/
 .streamlit/secrets.toml
 .env
 .env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+.secrets.baseline
+.audit/
