@@ -1,6 +1,6 @@
 simulation:
   seed: 42
-  hours: 24
+  hours: 168
   hz: 1
   nominal_train_fraction: 0.7
   data_dir: "tekclipse/data/generated"
@@ -61,7 +61,7 @@ model:
   score_threshold_quantile: 0.95
 
 ui:
-  dark_background: "#0A1628"
+  dark_background: "#050B14"
   panel_background: "#0E223E"
   cyan: "#22D3EE"
   success: "#34D399"

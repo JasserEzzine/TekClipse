@@ -5,3 +5,12 @@ __pycache__/
 venv/
 .DS_Store
 *.log
+tekclipse/data/generated/*.parquet
+tekclipse/data/generated/*.sqlite
+tekclipse/data/generated/manifest.json
+tekclipse/data/generated/nominal_preview.json
+tekclipse/data/generated/
+results/
+.streamlit/secrets.toml
+.env
+.env.*
