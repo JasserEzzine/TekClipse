@@ -70,23 +70,14 @@ def evaluate_scenario(scenario_name: str, data: dict):
             valid_alert_times.append(ts)
     first_alert = min(valid_alert_times) if valid_alert_times else None
 
-    tp = 0
-    fp = len(valid_alert_times)
-    fn = 0
-    tn = 0
-    if ground_truth:
-        for gt_ts, _ in ground_truth:
-            gt_time = pd.to_datetime(gt_ts, utc=True)
-            if any(a >= gt_time for a in valid_alert_times):
-                tp += 1
-            else:
-                fn += 1
-        fp = max(0, len(valid_alert_times) - tp)
-    else:
-        tn = max(0, len(test_telemetry) - len(valid_alert_times))
-        fp = len(valid_alert_times)
-    metrics = compute_metrics(tp, fp, tn, fn, first_alert, onset)
-    return {"scenario": scenario_name, "alerts": alerts, "metrics": metrics, "ground_truth": ground_truth}
+    # Preserve the legacy preview API, but do not publish onset-only counts as
+    # measured performance. This path may receive already-injected training data.
+    metrics = {name: float("nan") for name in (
+        "precision", "recall", "f1", "fpr", "latency_ms", "cpu_percent", "ram_mb"
+    )}
+    return {"scenario": scenario_name, "alerts": alerts, "metrics": metrics,
+            "ground_truth": ground_truth, "metrics_available": False,
+            "evaluation_note": "Legacy preview has insufficient labels/split guarantees. Use evaluation.validated.evaluate_held_out with untouched nominal data."}
 
 
 def run_all_scenarios():

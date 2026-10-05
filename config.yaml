@@ -13,6 +13,7 @@ scenarios:
     - E4
     - E5
     - E6
+    - E7
   injection_window_seconds: 60
 
 telemetry:
@@ -67,3 +68,6 @@ ui:
   success: "#34D399"
   warning: "#FBBF24"
   critical: "#F87171"
+
+security:
+  correlation_window_seconds: 180

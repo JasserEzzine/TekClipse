@@ -18,6 +18,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from tekclipse.dashboard import charts
+from tekclipse.dashboard.security_panel import render_security_panel
 from tekclipse.dashboard.data_service import (
     dataset_token,
     load_data,
@@ -25,6 +26,7 @@ from tekclipse.dashboard.data_service import (
     detect,
     load_nominal_preview,
     save_nominal_preview,
+    evaluate_preview,
 )
 
 st.set_page_config(
@@ -79,7 +81,7 @@ with st.sidebar:
             "NETWORK",
             "EVENTS",
             "ALERTS",
-            "SCENARIOS E1–E6",
+            "SCENARIOS E1–E7",
             "ABOUT",
         ]:
 
@@ -127,6 +129,12 @@ if pending_scenario is not None:
     st.session_state["scenario"] = pending_scenario
 scenario = st.session_state.get("scenario", "E1")
 result = st.session_state.get("result")
+if st.session_state.pop("pending_evaluation", False):
+    with st.spinner("Running labeled held-out comparison…"):
+        st.session_state["validated_evaluation"] = evaluate_preview(
+            hours, token, scenario
+        )
+        st.session_state["evaluation_key"] = (run_key, scenario)
 with st.spinner("Loading mission streams…"):
     view = chart_data(hours, token, scenario)
 with st.sidebar:
@@ -149,7 +157,9 @@ with st.sidebar:
     )
     st.divider()
     st.caption("IF · 100 trees / contamination 0.05 / seed 42")
-    st.caption("Network and event anomaly detectors are not implemented.")
+    st.caption(
+        "Network baseline + explicit subsystem-event checks + temporal correlation."
+    )
 
 
 def plot(fig, key):
@@ -169,7 +179,21 @@ def plot(fig, key):
 def run(scenario_name):
     # Widget callbacks run before the script: process once before charts are built.
     st.session_state["pending_scenario"] = scenario_name
-    st.session_state["mission_tabs"] = "SCENARIOS E1–E6"
+    st.session_state["mission_tabs"] = "SCENARIOS E1–E7"
+    st.session_state["guided_demo"] = False
+    for prefix in ("overview", "scenarios"):
+        st.session_state.pop(prefix + "_replay_second", None)
+
+
+def demo_run(scenario_name):
+    run(scenario_name)
+    st.session_state["guided_demo"] = True
+    st.session_state["mission_tabs"] = "OVERVIEW"
+
+
+def request_evaluation():
+    st.session_state["pending_evaluation"] = True
+    st.session_state["mission_tabs"] = "SCENARIOS E1–E7"
 
 
 def kpi(label, value, foot, series=(), icon="◈"):
@@ -192,13 +216,30 @@ names = [
     "NETWORK",
     "EVENTS",
     "ALERTS",
-    "SCENARIOS E1–E6",
+    "SCENARIOS E1–E7",
     "ABOUT",
 ]
 tabs = st.tabs(names, key="mission_tabs", on_change="rerun")
 # Stateful tabs render only their active content; heavy charts do not run offscreen.
 if tabs[0].open:
     with tabs[0]:
+        with st.expander("Judge demo / 2–3 minutes", expanded=False):
+            st.write(
+                "1. Start E1 and explain the nominal indicator. 2. Launch E7. 3. Advance through the attack stages. 4. Review the incident, deductions and simulated operator response."
+            )
+            demo_a, demo_b = st.columns(2)
+            demo_a.button(
+                "Start nominal E1", key="demo_E1", on_click=demo_run, args=("E1",)
+            )
+            demo_b.button(
+                "Launch E7 guided replay",
+                key="demo_E7",
+                on_click=demo_run,
+                args=("E7",),
+                type="primary",
+            )
+        render_security_panel(result)
+        st.divider()
         st.markdown("### Mission overview")
         st.caption(
             f"{scenario} / {days}-day stored simulation · sparklines show the last hour"
@@ -438,7 +479,7 @@ if tabs[3].open:
             "Traffic rate uses simulator units. Bubble size sums connection_count samples; it is not a count of distinct connections."
         )
         st.caption(
-            "Network anomalies are visualized; the existing detector does not score this source."
+            "NET alerts compare per-second packet/byte totals, traffic rises and peer/protocol novelty with an untouched nominal baseline."
         )
 
 if tabs[4].open:
@@ -470,10 +511,15 @@ if tabs[5].open:
                 with b:
                     plot(radar, "alert_radar")
                 st.caption(
-                    "Radar reports alert counts. *Network and events have no implemented detector; zero does not establish nominal behavior."
+                    "Radar reports actual alert counts including NET and SYS checks. Zero alerts does not establish safety."
                 )
                 plot(bar, "alert_time")
-                shown = alerts.tail(200).copy()
+                selected_sources = st.multiselect(
+                    "Detector sources",
+                    sorted(alerts.source.unique()),
+                    default=sorted(alerts.source.unique()),
+                )
+                shown = alerts[alerts.source.isin(selected_sources)].tail(200).copy()
                 shown["description"] = (
                     "Deviation from nominal profile · " + shown.description
                 )
@@ -501,22 +547,27 @@ if tabs[5].open:
             else:
                 st.success("No deviations detected by these detectors in this preview.")
             st.caption(
-                "Preview scores the full scenario timeline, which overlaps the nominal training timeline. It is not a held-out evaluation; detection rate, FPR and latency remain to be validated."
+                "Preview scores overlap the nominal training timeline. Use the separate held-out evaluation in Scenarios for explicitly labeled synthetic measurements."
             )
 
 if tabs[6].open:
     with tabs[6]:
         st.markdown("### Scenario laboratory")
         st.caption(
-            "All six injectors exist in this repository. Buttons execute the original injectors and detectors. E2–E6 inject at 01 Jan 2026, 12:00 UTC."
+            "E1–E6 retain their original injectors. E7 adds a staged sequence. Injection reference: 01 Jan 2026, 12:00 UTC."
         )
         items = [
             ("E1", "Normal operation", "Nominal baseline"),
             ("E2", "Unauthorized command", "R1 command source check"),
             ("E3", "Command flooding", "R2 command rate check"),
-            ("E4", "Network traffic spike", "No network detector implemented"),
+            ("E4", "Network traffic spike", "Network statistical baseline"),
             ("E5", "Temperature manipulation", "R3 + telemetry IF"),
-            ("E6", "Combined anomalies", "R1 + R3 + telemetry IF; network unscored"),
+            ("E6", "Combined anomalies", "R1 + R3 + telemetry IF + NET + correlation"),
+            (
+                "E7",
+                "Coordinated multi-stage attack",
+                "Commands → network → telemetry → subsystem impact",
+            ),
         ]
         for code, name, coverage in items:
             a, b, c = st.columns([1.5, 2, 0.8])
@@ -527,7 +578,7 @@ if tabs[6].open:
             with c:
                 st.button(f"Run {code}", key=f"run_{code}", on_click=run, args=(code,))
         st.info(
-            "Preview only: training uses the untouched nominal baseline. Formal held-out scenario metrics require evaluation validation; no performance claims are displayed."
+            "Preview training uses the untouched nominal baseline. The separate evaluation below uses a non-overlapping split and explicit synthetic labels."
         )
         if result:
             st.write(
@@ -541,6 +592,32 @@ if tabs[6].open:
                     ),
                     hide_index=True,
                 )
+            render_security_panel(result, prefix="scenarios")
+        st.markdown("### Held-out synthetic evaluation")
+        st.caption(
+            "Separate from the preview: fit on the first six nominal hours, score later samples against explicit injected windows. A run can take time. Undefined metrics are left blank."
+        )
+        st.button(
+            "Evaluate selected scenario",
+            key="evaluate_selected",
+            on_click=request_evaluation,
+        )
+        evaluation = st.session_state.get("validated_evaluation")
+        if evaluation and st.session_state.get("evaluation_key") == (run_key, scenario):
+            if evaluation["available"]:
+                st.dataframe(pd.DataFrame(evaluation["comparisons"]).T, width="stretch")
+                st.caption(evaluation["method"])
+                st.caption(
+                    f"Training through {evaluation['train_end']}; test {evaluation['test_start']} to {evaluation['test_end']}."
+                )
+                st.download_button(
+                    "Export evaluation / JSON",
+                    json.dumps(evaluation, indent=2),
+                    file_name=f"tekclipse-{scenario}-evaluation.json",
+                    mime="application/json",
+                )
+            else:
+                st.info(evaluation["reason"])
 
 if tabs[7].open:
     with tabs[7]:

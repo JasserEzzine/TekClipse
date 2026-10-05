@@ -68,6 +68,8 @@ def scenario_e6(data: dict) -> tuple[dict, list[tuple[str, str]]]:
 
 
 def get_scenario(name: str):
+    from tekclipse.data.coordinated import scenario_e7
+
     mapping = {
         "E1": scenario_e1,
         "E2": scenario_e2,
@@ -75,6 +77,7 @@ def get_scenario(name: str):
         "E4": scenario_e4,
         "E5": scenario_e5,
         "E6": scenario_e6,
+        "E7": scenario_e7,
     }
     if name not in mapping:
         raise ValueError(f"Unknown scenario: {name}")

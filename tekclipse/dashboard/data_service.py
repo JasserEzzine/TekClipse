@@ -21,6 +21,10 @@ from tekclipse.data.injection import get_scenario
 from tekclipse.evaluation.runner import prepare_nominal_split, _feature_matrix
 from tekclipse.pipeline.model import build_model, compute_ml_alerts
 from tekclipse.pipeline.rules import detect_rule_alerts
+from tekclipse.pipeline.network import fit_network_baseline, detect_network_alerts
+from tekclipse.pipeline.explain import explain_alerts, detect_system_alerts
+from tekclipse.pipeline.correlation import correlate_alerts
+from tekclipse.config import load_config
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "generated"
 ALERT_COLUMNS = ["timestamp", "source", "severity", "description", "score"]
@@ -47,6 +51,7 @@ def _detector_signature():
         root / "tekclipse/evaluation/runner.py",
     ]
     paths.extend(sorted((root / "tekclipse/pipeline").glob("*.py")))
+    paths.extend(sorted((root / "tekclipse/data").glob("*.py")))
     return hashlib.sha256(b"".join(p.read_bytes() for p in paths)).hexdigest()
 
 
@@ -189,7 +194,6 @@ def detect(hours: int, token: str, scenario: str) -> dict:
         train_features, contamination=0.05, random_state=42
     )
     threshold = float(np.quantile(train_scores, 0.95))
-    del train_features
     scenario_data, truth = get_scenario(scenario)(nominal)
     features = _feature_matrix(scenario_data["telemetry"], cols)
     numeric = features.select_dtypes(include="number")
@@ -202,7 +206,23 @@ def detect(hours: int, token: str, scenario: str) -> dict:
         network=scenario_data["network"],
         events=scenario_data["system_events"],
     )
-    alerts = pd.DataFrame(rules + ml, columns=ALERT_COLUMNS)
+    network_baseline = fit_network_baseline(
+        nominal["network"].loc[lambda d: d.timestamp <= train.timestamp.max()]
+    )
+    network = detect_network_alerts(scenario_data["network"], network_baseline)
+    system = detect_system_alerts(scenario_data["system_events"])
+    evidence = explain_alerts(
+        rules + ml + network + system, scenario_data, train_features, features
+    )
+    window = int(
+        load_config().get("security", {}).get("correlation_window_seconds", 180)
+    )
+    security = dict(
+        evidence=evidence,
+        incidents=correlate_alerts(evidence, window),
+        window_seconds=window,
+    )
+    alerts = pd.DataFrame(evidence, columns=ALERT_COLUMNS)
     alerts["timestamp"] = pd.to_datetime(alerts.timestamp, utc=True)
     alerts = alerts.sort_values("timestamp").reset_index(drop=True)
     flagged = scores > threshold
@@ -224,7 +244,16 @@ def detect(hours: int, token: str, scenario: str) -> dict:
         scenario=scenario,
         train_samples=len(train),
         evaluated_samples=len(scores),
+        security=security,
     )
+
+
+@st.cache_data(max_entries=8, show_spinner=False)
+@serialized_detector
+def evaluate_preview(hours: int, token: str, scenario: str):
+    from tekclipse.evaluation.validated import evaluate_held_out
+
+    return evaluate_held_out(load_data(hours, token), scenario)
 
 
 @st.cache_data(max_entries=4, show_spinner=False)

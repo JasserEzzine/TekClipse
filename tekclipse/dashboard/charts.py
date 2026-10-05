@@ -406,8 +406,14 @@ def alert_charts(alerts, data):
     cmd = int(alerts.source.isin(["R1", "R2"]).sum())
     radar = go.Figure(
         go.Scatterpolar(
-            r=[tel, cmd, 0, 0, tel],
-            theta=["Telemetry", "Commands", "Network*", "Events*", "Telemetry"],
+            r=[
+                tel,
+                cmd,
+                int(alerts.source.eq("NET").sum()),
+                int(alerts.source.eq("SYS").sum()),
+                tel,
+            ],
+            theta=["Telemetry", "Commands", "Network", "Events", "Telemetry"],
             fill="toself",
             line_color=CYAN,
             name="Alert count",
