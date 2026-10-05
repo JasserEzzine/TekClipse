@@ -16,11 +16,14 @@ The project is an engineering/research prototype for **IASTAM 6.0, Track 5 — C
 - Temperature/orbit cycles, sunlight/eclipse battery behavior, and correlated ground-pass activity.
 - Concrete operational logs: contact acquisition, eclipse transitions, command acknowledgements and subsystem messages.
 - Command and telemetry rules, plus nominal-trained telemetry Isolation Forest.
-- Eight interactive dashboard tabs and six runnable injected scenarios.
+- Eight interactive dashboard tabs and seven runnable scenarios (E1–E7).
+- Statistical network detection, explicit subsystem-event checks and multi-source incidents.
+- An explainable 0–100 trust indicator, attack replay and simulated operator recommendations.
+- Separate held-out, explicitly labeled synthetic evaluation for rules/ML/hybrid detection.
 - Actual alert tables, charts and CSV exports; cached nominal results populate the first view.
 - CSV, SQLite and optional Parquet storage. Generated outputs are excluded from this branch's Git tree.
 
-**Monitoring four sources does not mean four independent detectors are implemented.** Network and event records are visualized; the current detection rules/model primarily inspect commands and telemetry.
+Each source has a defined role: commands and telemetry feed the original rules, telemetry feeds Isolation Forest, network records feed a nominal statistical baseline, and explicit watchdog/degraded-subsystem events feed a small event check. Routine warnings/errors are not automatically classified as attacks.
 
 ## Data and architecture
 
@@ -30,18 +33,22 @@ flowchart TD
     B --> C[Preprocessing and rolling features]
     C --> D[Command and telemetry rules R1-R3]
     C --> E[Telemetry Isolation Forest]
+    B --> N[Network baseline and system-event checks]
     D --> F[Merged detector alerts]
     E --> F
+    N --> F
+    F --> I[Temporal incidents and trust indicator]
     B --> G[Streamlit / Plotly dashboard]
     F --> G
+    I --> G
 ```
 
 | Source | Contents | Current use |
 |---|---|---|
 | Telemetry | Temperature, CPU, RAM, battery, voltage, power, signal strength | Charts, R3 physical limits, Isolation Forest |
 | Commands | Timestamp, command type, source, authorization flag | Timeline, composition, R1/R2 checks |
-| Network | Source/destination IP, protocol, packets, bytes, traffic rate, connection-count samples | Flow charts and scenario visualization |
-| System events | Timestamp, event type, subsystem and message | Mission log, activity counts, heatmap |
+| Network | Source/destination IP, protocol, packets, bytes, traffic rate, connection-count samples | Flow charts; per-second rate/spike and category-novelty detection |
+| System events | Timestamp, event type, subsystem and message | Mission log, heatmap; explicit watchdog/degraded-subsystem checks |
 
 Continuous telemetry and network records are sampled at **1 Hz**. The generator supports 1–720 hours. Seven days contain 604,800 records in each continuous stream; event and command counts follow generated activity. All IPs, commands and mission events are simulated. No generated command is sent to a device.
 
@@ -55,6 +62,8 @@ The generator models a 90-minute orbital cycle and recurring ground-station pass
 | R2 | Flags more than 10 commands in a one-minute bin. |
 | R3 | Flags temperature above 85 °C or voltage outside 26–30 V. |
 | Isolation Forest | Scores raw telemetry and its 60-sample rolling means/standard deviations against nominal training data. |
+| NET | Sums packet/byte/rate records per second; limits are 1.5 × nominal 99.9th percentile. Also checks adjacent-second traffic rises and unseen source/destination/protocol categories. |
+| SYS | Flags explicit `watchdog_reset` and `subsystem_degraded` events. Routine simulated authentication failures and checksum retries remain contextual logs. |
 
 ```python
 n_estimators = 100
@@ -64,19 +73,33 @@ random_state = 42
 
 The dashboard uses `-decision_function` as its score and the existing nominal-training score quantile as its alert threshold. The score is **not an attack probability**. Nominal data can also produce IF alerts. Rule scores are fixed rule annotations, not calibrated probabilities.
 
-Rules and model results are merged for display. “Network” and “Events” radar values reflect the absence of corresponding detector alerts; zero does not prove that these sources are healthy. Isolation Forest is an established practical baseline, not an algorithmic novelty or a claimed optimum.
+Rules and model results are merged for display, including actual NET/SYS counts in the radar. Zero does not prove that a source is healthy. Isolation Forest is an established practical baseline, not an algorithmic novelty or a claimed optimum. ML explanations show the largest feature deviations from nominal means/standard deviations; these are context, not causal model attribution.
+
+## Incidents and satellite trust
+
+Correlation groups actionable evidence and subsequent alerts within a bounded **180-second** window (`security.correlation_window_seconds` in `config.yaml`). An incident requires at least two independent domains. R3 and ML both count as telemetry; repeated samples do not create independent corroboration. Incidents retain time ranges, contributing alert IDs, sources, severity and explanations. Association is temporal, not proof of causation.
+
+The correlation score is `min(100, 20 × domains + 5 × non-ML detector families + 10 if critical evidence exists)`. Three or more domains and score ≥75 produce CRITICAL; other incidents are HIGH. This is an explainable association score, not a probability of an attack.
+
+**Prototype Operational Trust Indicator:** begin at 100 and subtract capped penalties from evidence in the trailing review window. Caps are R1=20, R2=12, R3=18, NET=12, SYS=12 and ML=3. Multiply each by its maximum severity weight (WARNING=0.75, HIGH/CRITICAL=1), then round. Add a correlation deduction of 10 for HIGH or 19 for CRITICAL; floor the result at zero. Repeated samples do not multiply penalties.
+
+Statuses: NORMAL ≥80; SUSPICIOUS 50–79; CRITICAL <50. The UI shows every deduction. This is a policy indicator, **not scientifically validated trust or attack probability**. Expired evidence can restore the score without proving remediation. The subsystem view maps evidence to Communications, Thermal, Power, On-board computer and Command channel; NORMAL means no mapped active evidence.
+
+The briefing reviews a clearly labeled historical time near the injection. E7's replay reveals only evidence already observed at the selected time. R2's original minute-bin timestamp is preserved in raw alerts; correlation and evaluation use the 11th command's actual observation time.
+
+**Recommended Operator Response** is display-only advice. The app never rejects real commands, isolates devices, or activates a real satellite safe mode.
 
 ## Dashboard
 
 | Tab | What visitors can do |
 |---|---|
-| Overview | Inspect current samples, actual alerts, nominal score, mission activity and the orbit schematic |
+| Overview | Trust/status briefing, subsystem flags, attack timeline, recommended responses, guided E7 replay, plus existing mission charts |
 | Telemetry | Select signals, switch overlay/small multiples, inspect IF shading and correlation |
 | Commands | Examine authorization, timelines, cumulative counts and command composition |
 | Network | Inspect protocol traffic and animated aggregated flows |
 | Events | Filter operational events and inspect the daily/hourly heatmap |
 | Alerts | View severity/time/source summaries and export actual alerts |
-| Scenarios E1–E6 | Run the existing injectors and detector previews |
+| Scenarios E1–E7 | Run preserved E1–E6 and new E7; inspect incidents and run held-out evaluation |
 | About | Read the architecture, scope and validation roadmap |
 
 Chart aggregation limits browser payloads. Detection still uses the full selected telemetry resolution. Temperature bin maxima retain short thermal spikes; shaded display bins contain one or more IF flags. The live UTC clock is wall-clock time: the dataset itself is a stored simulation starting on **1 January 2026**.
@@ -88,13 +111,32 @@ Chart aggregation limits browser payloads. Detection still uses the full selecte
 | E1 | Nominal operation | Baseline IF deviations may still occur |
 | E2 | Unauthorized REBOOT command from `UNKNOWN_1` | R1 |
 | E3 | Burst of 30 UPLOAD commands | R2 |
-| E4 | Additional high-rate network records | Visualized; no network detector is implemented |
+| E4 | Additional high-rate network records | NET statistical/novelty alerts |
 | E5 | 120 °C temperature step for the injection window | R3; IF response can be inspected |
-| E6 | Combined unauthorized command, network and temperature anomalies | R1/R3 and telemetry IF; network remains unscored |
+| E6 | Combined unauthorized command, network and temperature anomalies | R1/R3, telemetry IF, NET and correlation |
+| E7 | Staged unauthorized configuration, unusual peer/traffic, command burst, thermal/CPU deviation, watchdog/degraded-subsystem events | R1/R2/R3, IF, NET, SYS, correlated incident and progressive trust deductions |
 
 Existing injectors use **1 January 2026 at 12:00 UTC**. Dashboard model training always uses the untouched nominal dataset before injecting a scenario. The preview scores the full scenario timeline, which overlaps the nominal training timeline. Therefore, previews are **not held-out performance evaluations**.
 
-The separate evaluation module is experimental. Timestamp handling is regression-tested, but its onset-based event matching, train/test alignment and CPU/RAM accounting still require methodological validation. Its outputs must not be presented as established detection rate, FPR, latency or monitoring overhead. The public dashboard does not present those values as validated results.
+## Evaluation: measurements with explicit labels
+
+The Scenarios evaluation button and `python scripts/run_experiment.py --scenario E7 --hours 24` use `evaluation/validated.py`. They fit on the **first six hours of untouched nominal data**, then score the later timeline after scenario injection. Training and test samples do not overlap; test rolling features restart at the split. The generator's explicit injected intervals supply labels. Missing labels, incomplete 1 Hz coverage or an injection outside the held-out range make the run unavailable.
+
+Precision, recall, F1 and false-positive rate use one-second bins: a positive prediction means at least one detector alert in that second. Detection rate is the fraction of injected intervals with an alert. Latency averages the first in-window alert delay across detected intervals only; missed intervals are counted separately. Undefined values are blank/null, never invented zeros. Feature aftereffects outside injection windows count as false positives.
+
+The comparison is **R1–R3 only / telemetry IF only / hybrid (rules + IF + NET + SYS)**. Detector coverage differs, so this is an operational comparison, not a controlled ablation. Temporal hits do not establish correct causal attribution. E7's extended network interval includes its later stages; interval detection rate does not mean every stage was detected. Synthetic results do not establish real satellite accuracy. Correlation/trust are not classifiers in this benchmark.
+
+The legacy evaluator remains callable for compatibility, but now marks its onset-only performance metrics unavailable (`NaN`) instead of presenting invalid counts. CPU/RAM overhead and real-world validation remain future work.
+
+## Demonstrate E7 in 2–3 minutes
+
+1. Start the app with `python -m streamlit run streamlit_app.py`. Keep the one-day range for the fastest demo; warm up E7 once before presenting.
+2. **0:00–0:30:** Overview → expand **Judge demo / 2–3 minutes** → **Start nominal E1**. Explain the high indicator and that nominal IF flags can still occur.
+3. **0:30–1:30:** click **Launch E7 guided replay**, then **Next attack stage**. Observe the unauthorized command at +20s, network at +45s, command burst at +86s, thermal deviation at +100s and impact event at +120s.
+4. **1:30–2:15:** show the CRITICAL incident, falling trust chart and exact deductions. Open the evidence table to explain the network baseline and thermal threshold.
+5. **2:15–3:00:** show subsystem flags and **Recommended Operator Response**. State that responses are simulated recommendations and anomalies do not prove attacks. Optionally export the incident JSON.
+
+The slider can revisit any point without future evidence leaking into the briefing. **Run E7** in Scenarios also opens a completed incident review. E7 needs at least 13 hours of data; dashboard ranges satisfy this. Evaluation is optional and can be run before the presentation.
 
 ## Run locally
 
@@ -166,10 +208,10 @@ streamlit_app.py           Cloud startup and full dashboard entrypoint
 .streamlit/config.toml    Theme and public-host protections
 config.yaml               Simulation/model configuration
 requirements.txt          Pinned Python dependencies
-tekclipse/data/            Generator and E1–E6 injectors
-tekclipse/pipeline/        Features, rules and Isolation Forest
+tekclipse/data/            Generator, preserved E1–E6 and coordinated E7
+tekclipse/pipeline/        Original detectors plus network/correlation/trust/response
 tekclipse/dashboard/      UI, Plotly charts, caching and preview persistence
-tekclipse/evaluation/     Experimental evaluator and metric helpers
+tekclipse/evaluation/     Explicit held-out evaluation and legacy compatibility API
 tekclipse/storage/        CSV/SQLite/JSON result helpers
 scripts/                  Generation and preparation utilities
 tests/                    Data, scenario, hosting and regression checks
@@ -183,6 +225,8 @@ python -m pytest -q
 
 The tests cover reproducibility, storage round trips, command acknowledgement alignment, scenario/rule compatibility, preview freshness, concurrent preview writes and detector serialization. Deployment checks also exercise startup, all tabs and actual scenario buttons.
 
-The research roadmap is to validate strictly held-out injection windows and ground truth; measure detection rate, false positives and latency; distinguish process usage from incremental monitoring overhead; and compare telemetry-only monitoring with genuinely multi-source detection. Negative and inconclusive outcomes should be reported alongside successful cases.
+Tests also check E4 network coverage, E7 reproducibility/non-mutation, time-bounded correlation, deterministic trust deductions, observation-time causality, subsystem mapping, known confusion matrices, held-out coverage and the actual guided replay/evaluation controls. See [the upgrade implementation notes](docs/security-upgrade.md) for the changed files and test scope.
+
+The research roadmap is to validate more diverse held-out missions, tune thresholds without test leakage, measure incremental CPU/RAM overhead and compare controlled detector ablations. Negative and inconclusive outcomes should be reported alongside successful cases. The current network detector uses a fixed nominal envelope and can flag legitimate new peers/protocols; correlation uses time proximity, not authenticated identity or a causal graph.
 
 Fonts are bundled under `tekclipse/dashboard/assets/` with their SIL Open Font License texts. This is a simulation-based feasibility investigation, not a production satellite cybersecurity system.
