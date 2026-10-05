@@ -8,7 +8,10 @@ import streamlit as st
 
 os.environ["TEKCLIPSE_CLOUD"] = "1"
 st.set_page_config(
-    page_title="TekClipse | Mission Control", page_icon="◉", layout="wide"
+    page_title="TekClipse | Mission Control",
+    page_icon="◉",
+    layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
 

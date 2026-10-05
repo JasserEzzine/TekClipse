@@ -260,6 +260,21 @@ def evaluate_preview(hours: int, token: str, scenario: str):
 def chart_data(hours: int, token: str, scenario: str) -> dict:
     data, _ = get_scenario(scenario)(load_data(hours, token))
     telemetry = data["telemetry"]
+    # Small exact-sample window for the replay hero; display bins may include future
+    # values, so they must never be used to narrate a partially revealed E7 stage.
+    from tekclipse.data.coordinated import ONSET
+
+    review_start, review_end = ONSET - pd.Timedelta(seconds=180), ONSET + pd.Timedelta(
+        seconds=180
+    )
+    review_telemetry = telemetry[
+        telemetry.timestamp.between(review_start, review_end)
+    ].copy()
+    review_network = (
+        data["network"]
+        .loc[lambda d: d.timestamp.between(review_start, review_end), ["timestamp"]]
+        .copy()
+    )
     # Bounded time bins; means plus extrema retain spikes in long-range views.
     step = max(10, int(np.ceil(hours * 3600 / 1800)))
     freq = f"{step}s"
@@ -303,6 +318,8 @@ def chart_data(hours: int, token: str, scenario: str) -> dict:
         .reindex(index=days, columns=range(24), fill_value=0)
     )
     return dict(
+        review_telemetry=review_telemetry,
+        review_network=review_network,
         telemetry=tel,
         extrema=extrema,
         area=area,

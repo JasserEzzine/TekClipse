@@ -30,7 +30,10 @@ from tekclipse.dashboard.data_service import (
 )
 
 st.set_page_config(
-    page_title="TEKCLIPSE | Mission Control", page_icon="◉", layout="wide"
+    page_title="TEKCLIPSE | Mission Control",
+    page_icon="◉",
+    layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
 
@@ -54,19 +57,13 @@ def local_font_css():
 
 st.html("<style>" + local_font_css() + "</style>")
 st.html(Path(__file__).with_name("theme.css"))
+st.html(Path(__file__).with_name("mission.css"))
 st.html(
     '<div class="disclaimer">SIMULATION ONLY · Alerts indicate deviation from nominal profile, not confirmed attacks.</div>'
 )
 st.html(
-    """<div class="mission-header"><div class="eyebrow">TEK-UP UNIVERSITY / IASTAM 6.0 / TRACK 05 · P9</div>
-<div class="mission-title">◉ TEKCLIPSE <span style="color:#607F99;font-weight:400">/</span> SATELLITE SECURITY OPERATIONS</div>
-<div class="header-meta"><span class="live">LIVE SIMULATION</span><span class="chip">SYNTHETIC DATA · SEED 42</span><span>Multi-source operations observatory</span></div></div>"""
-)
-# Bounded, one-second clock only; starfield is pure CSS.
-st.iframe(
-    """<body style="margin:0;color:#8198AE;font:11px monospace;background:transparent"><span id="clock"></span> · WALL CLOCK / DATA IS A STORED SIMULATION
-<script>function tick(){document.getElementById('clock').textContent=new Date().toISOString().replace('T',' ').slice(0,19)+' UTC'}tick();setInterval(tick,1000)</script></body>""",
-    height=22,
+    """<div class="mission-header"><div><div class="mission-title">◉ TEKCLIPSE</div><div class="eyebrow">SATELLITE SECURITY OPERATIONS</div></div>
+<div class="header-meta"><span>TEK-UP / IASTAM 6.0 / TRACK 05 · P9</span><span class="chip">STORED SIMULATION · SEED 42</span><span>Multi-source operations observatory</span></div></div>"""
 )
 
 with st.sidebar:
@@ -160,6 +157,13 @@ with st.sidebar:
     st.caption(
         "Network baseline + explicit subsystem-event checks + temporal correlation."
     )
+    # Wall clock retained separately from the simulation review UTC.
+    # Bounded, one-second clock only; starfield is pure CSS.
+    st.iframe(
+        """<body style="margin:0;color:#8198AE;font:11px monospace;background:transparent"><span id="clock"></span> · WALL CLOCK / DATA IS A STORED SIMULATION
+    <script>function tick(){document.getElementById('clock').textContent=new Date().toISOString().replace('T',' ').slice(0,19)+' UTC'}tick();setInterval(tick,1000)</script></body>""",
+        height=22,
+    )
 
 
 def plot(fig, key):
@@ -189,6 +193,13 @@ def demo_run(scenario_name):
     run(scenario_name)
     st.session_state["guided_demo"] = True
     st.session_state["mission_tabs"] = "OVERVIEW"
+
+
+def reset_demo():
+    # Reset all review-only state; cached detector output is reused, not retrained.
+    for key in ("validated_evaluation", "evaluation_key", "pending_evaluation"):
+        st.session_state.pop(key, None)
+    demo_run("E1")
 
 
 def request_evaluation():
@@ -223,6 +234,26 @@ tabs = st.tabs(names, key="mission_tabs", on_change="rerun")
 # Stateful tabs render only their active content; heavy charts do not run offscreen.
 if tabs[0].open:
     with tabs[0]:
+        demo_a, demo_b, demo_c = st.columns([1, 1.3, 1])
+        demo_a.button(
+            "Start nominal E1",
+            key="mission_E1",
+            on_click=demo_run,
+            args=("E1",),
+            width="stretch",
+        )
+        demo_b.button(
+            "Launch E7 attack",
+            key="mission_E7",
+            on_click=demo_run,
+            args=("E7",),
+            type="primary",
+            width="stretch",
+        )
+        demo_c.button(
+            "Reset demo", key="mission_reset", on_click=reset_demo, width="stretch"
+        )
+        render_security_panel(result, view=view)
         with st.expander("Judge demo / 2–3 minutes", expanded=False):
             st.write(
                 "1. Start E1 and explain the nominal indicator. 2. Launch E7. 3. Advance through the attack stages. 4. Review the incident, deductions and simulated operator response."
@@ -238,7 +269,6 @@ if tabs[0].open:
                 args=("E7",),
                 type="primary",
             )
-        render_security_panel(result)
         st.divider()
         st.markdown("### Mission overview")
         st.caption(
@@ -592,7 +622,7 @@ if tabs[6].open:
                     ),
                     hide_index=True,
                 )
-            render_security_panel(result, prefix="scenarios")
+            render_security_panel(result, prefix="scenarios", view=view)
         st.markdown("### Held-out synthetic evaluation")
         st.caption(
             "Separate from the preview: fit on the first six nominal hours, score later samples against explicit injected windows. A run can take time. Undefined metrics are left blank."

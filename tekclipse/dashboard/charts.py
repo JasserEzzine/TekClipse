@@ -21,6 +21,7 @@ COLOR_MAP = dict(zip(LABELS, COLORS)) | {
     "TCP": CYAN,
     "UDP": VIOLET,
     "WARNING": AMBER,
+    "HIGH": AMBER,
     "CRITICAL": RED,
     "GS_PRIMARY": CYAN,
     "GS_BACKUP": VIOLET,
@@ -31,14 +32,16 @@ COLOR_MAP = dict(zip(LABELS, COLORS)) | {
 def style(fig, title="", height=350, time_axis=False):
     fig.update_layout(
         template="plotly_dark",
-        title=dict(text=title, font=dict(family="Orbitron, sans-serif", size=14)),
+        title=dict(text=title, font=dict(family="Inter, sans-serif", size=15)),
         height=height,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         colorway=COLORS,
         margin=dict(l=35, r=25, t=55, b=35),
-        font=dict(family="Inter, sans-serif", color="#B9D0E3", size=11),
-        hoverlabel=dict(bgcolor="#0E223E", font_family="JetBrains Mono, monospace"),
+        font=dict(family="Inter, sans-serif", color="#C3D2DD", size=12),
+        hoverlabel=dict(
+            bgcolor="#132b3d", font_family="JetBrains Mono, monospace", font_size=12
+        ),
         legend=dict(orientation="h", y=-0.18),
         uirevision=title,
     )
