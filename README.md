@@ -1,6 +1,14 @@
-# TekClipse
+# TEKCLIPSE
 
-**A lightweight anomaly-detection demonstrator for simulated satellite operations.**
+## Satellite Cybersecurity & Operational Trust Demonstrator
+
+### “Can the Satellite Still Be Trusted?”
+
+[![Tests and security checks](https://github.com/JasserEzzine/TekClipse/actions/workflows/checks.yml/badge.svg?branch=tekclipse-cloud)](https://github.com/JasserEzzine/TekClipse/actions/workflows/checks.yml)
+
+**Python 3.14 · Streamlit · Plotly · ML: Isolation Forest · Simulation only**
+
+TekClipse turns simulated satellite security evidence into an operational story: **what happened → where it happened → why trust changed → what could affect the mission → what an operator could consider**. Its mission-control Overview is designed for a space-oriented jury; all eight analyst/research tabs remain available.
 
 The current dashboard and deployment code are on the [tekclipse-cloud branch](https://github.com/JasserEzzine/TekClipse/tree/tekclipse-cloud). Use that branch for the commands below; the default branch retains the earlier prototype.
 
@@ -9,6 +17,20 @@ TekClipse brings satellite telemetry, ground commands, network records and syste
 The project is an engineering/research prototype for **IASTAM 6.0, Track 5 — Cybersecurity, P9: “Can the Satellite Still Be Trusted?”** It uses generated data and does not connect to a real satellite.
 
 > **An anomaly is not proof of an attack.** Every displayed measurement comes from the simulator or detector. The orbit is illustrative. No flight readiness, attack attribution or validated detection accuracy is claimed.
+
+![Actual E7 mission-control screen: spacecraft, trust deductions, incident and potential mission impact](docs/assets/e7-critical-1920.png)
+
+<details><summary>Compare with the actual E1 nominal screen</summary>
+
+![Actual E1 mission-control screen](docs/assets/e1-nominal-1920.png)
+
+</details>
+
+Screenshots are captured from the working app, not design mockups. [Media provenance and recording guidance](docs/assets/README.md) · [Mission-control implementation and validation](docs/mission-control.md).
+
+## Challenge and space context
+
+A satellite's operational behavior depends on commands, communication, onboard processing, power and thermal conditions. An unusual reading alone does not explain whether an operator should trust the whole system. TekClipse brings those observations together and translates supported security evidence into clearly labeled **potential** mission consequences. The project has passed its research-paper selection stage; this repository presents the reproducible prototype for the next phase.
 
 ## What is implemented
 
@@ -20,6 +42,7 @@ The project is an engineering/research prototype for **IASTAM 6.0, Track 5 — C
 - Statistical network detection, explicit subsystem-event checks and multi-source incidents.
 - An explainable 0–100 trust indicator, attack replay and simulated operator recommendations.
 - Separate held-out, explicitly labeled synthetic evaluation for rules/ML/hybrid detection.
+- A state-driven spacecraft/ground-link schematic, attack progression, mission-impact reasoning and one-click demo reset.
 - Actual alert tables, charts and CSV exports; cached nominal results populate the first view.
 - CSV, SQLite and optional Parquet storage. Generated outputs are excluded from this branch's Git tree.
 
@@ -29,7 +52,11 @@ Each source has a defined role: commands and telemetry feed the original rules, 
 
 ```mermaid
 flowchart TD
-    A[Deterministic satellite simulator] --> B[Telemetry / commands / network / system events]
+    GROUND[Simulated ground segment / command origins] --> L[Communication records]
+    L --> S[SAT-01 / simulated spacecraft and subsystems]
+    A[Deterministic satellite simulator] --> GROUND
+    A --> S
+    S --> B[Telemetry / commands / network / system events]
     B --> C[Preprocessing and rolling features]
     C --> D[Command and telemetry rules R1-R3]
     C --> E[Telemetry Isolation Forest]
@@ -38,10 +65,34 @@ flowchart TD
     E --> F
     N --> F
     F --> I[Temporal incidents and trust indicator]
+    I --> M[Evidence-derived subsystem status]
+    I --> P[Potential mission-impact reasoning]
+    P --> O[Simulated operator decision support]
     B --> G[Streamlit / Plotly dashboard]
     F --> G
     I --> G
 ```
+
+In the diagram, the ground-to-space path is a **conceptual security topology**, not a hardware/RF simulator. The implementation generates stored records; it neither sends commands to spacecraft nor predicts physical failure.
+
+## Ground-to-space security and mission impact
+
+The hero schematic shows Earth, a ground station, the link and **SAT-01**, a display name for the simulated spacecraft. Its colors come from the existing Communications, Command channel, On-board computer, Power and Thermal statuses. “LINK DATA ACTIVE” means recent network records exist; the independently labeled scheduled contact may be **OUT OF PASS**. Telemetry values come from exact stored samples at or before the review time, never from display bins containing future E7 data.
+
+The new mission-impact layer makes deterministic, traceable inferences from active evidence:
+
+| Observed evidence | Security concern | Subsystem | Potential mission consequence |
+|---|---|---|---|
+| Unauthorized command | Command integrity at risk | Command channel | Possible interruption or unintended operational change |
+| Command burst | Command availability at risk | Command channel | Possible delay to legitimate operator commands |
+| Network anomaly | Communication integrity/availability at risk | Communications | Potential degradation of ground-to-space communication |
+| Thermal or voltage limit | Operating margin at risk | Thermal / Power | Possible interruption to dependent subsystem or payload operations |
+| Explicit watchdog/degraded event | Processing continuity / regulation concern | OBC / Thermal | Possible interruption of onboard processing or operating availability |
+| ML telemetry deviation | Operational state needs verification | Telemetry | Possible deviation; cause and mission effect remain unconfirmed |
+
+Each mapping retains contributing alert IDs and appears only when its evidence is active. It adds **no new detector, scoring adjustment or physical model**. Existing operator recommendations are presented unchanged.
+
+**Mission impact represents simulated decision-support reasoning and does not predict physical spacecraft failure.** The attack chain is ordered by observed timestamps. E7 actually starts with its unauthorized command (+20s), then network activity (+45s); the presentation preserves that sequence.
 
 | Source | Contents | Current use |
 |---|---|---|
@@ -131,12 +182,14 @@ The legacy evaluator remains callable for compatibility, but now marks its onset
 ## Demonstrate E7 in 2–3 minutes
 
 1. Start the app with `python -m streamlit run streamlit_app.py`. Keep the one-day range for the fastest demo; warm up E7 once before presenting.
-2. **0:00–0:30:** Overview → expand **Judge demo / 2–3 minutes** → **Start nominal E1**. Explain the high indicator and that nominal IF flags can still occur.
-3. **0:30–1:30:** click **Launch E7 guided replay**, then **Next attack stage**. Observe the unauthorized command at +20s, network at +45s, command burst at +86s, thermal deviation at +100s and impact event at +120s.
-4. **1:30–2:15:** show the CRITICAL incident, falling trust chart and exact deductions. Open the evidence table to explain the network baseline and thermal threshold.
-5. **2:15–3:00:** show subsystem flags and **Recommended Operator Response**. State that responses are simulated recommendations and anomalies do not prove attacks. Optionally export the incident JSON.
+2. **0:00–0:30:** Overview → **Start nominal E1**. Point to SAT-01, link data, subsystem status and the calculated trust indicator. Explain that this is synthetic data and nominal IF flags can still occur.
+3. **0:30–1:30:** click **Launch E7 attack**, then **Next attack stage**. The same screen changes as the unauthorized command (+20s), network (+45s), burst (+86s), thermal deviation (+100s) and impact event (+120s) are observed.
+4. **1:30–2:15:** show the CRITICAL incident, actual trust deductions and colored spacecraft/subsystems. Open **Mission impact reasoning** to connect the cyber evidence to a potential operational consequence.
+5. **2:15–3:00:** show **Operator Decision Support** and its simulation disclaimer. Expand **Analyst briefing** for full recommendations, timelines, formulas and evidence export. Finish with **Reset demo**, then **Start nominal E1**, demonstrating that no stale E7 state remains.
 
 The slider can revisit any point without future evidence leaking into the briefing. **Run E7** in Scenarios also opens a completed incident review. E7 needs at least 13 hours of data; dashboard ranges satisfy this. Evaluation is optional and can be run before the presentation.
+
+The original **Judge demo** helper, mission activity, animated orbital schematic and ML gauge remain below the main briefing. Analyst charts intentionally retain the full scenario timeline; only the hero replay is restricted to already-observed evidence. Original and new Streamlit controls reuse cached detector output. Advancing stages does not retrain Isolation Forest.
 
 ## Run locally
 
@@ -226,6 +279,15 @@ python -m pytest -q
 The tests cover reproducibility, storage round trips, command acknowledgement alignment, scenario/rule compatibility, preview freshness, concurrent preview writes and detector serialization. Deployment checks also exercise startup, all tabs and actual scenario buttons.
 
 Tests also check E4 network coverage, E7 reproducibility/non-mutation, time-bounded correlation, deterministic trust deductions, observation-time causality, subsystem mapping, known confusion matrices, held-out coverage and the actual guided replay/evaluation controls. See [the upgrade implementation notes](docs/security-upgrade.md) for the changed files and test scope.
+
+Mission-control tests additionally cover impact provenance, ground/link availability, causal attack ordering, valid SVG assets, exact displayed trust, all E7 replay steps and reset without model retraining. Optional real-browser verification uses an installed Edge browser:
+
+```bash
+python -m pip install playwright  # Developer verification tool; not an app dependency
+python scripts/check_mission_ui.py --url http://127.0.0.1:8503
+```
+
+Start Streamlit on that port first, or pass its actual URL. This checks all tabs and both 1920×1080 and 1366×768 layouts and records actual screenshots and transition timings.
 
 The research roadmap is to validate more diverse held-out missions, tune thresholds without test leakage, measure incremental CPU/RAM overhead and compare controlled detector ablations. Negative and inconclusive outcomes should be reported alongside successful cases. The current network detector uses a fixed nominal envelope and can flag legitimate new peers/protocols; correlation uses time proximity, not authenticated identity or a causal graph.
 
