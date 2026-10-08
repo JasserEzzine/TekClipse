@@ -16,11 +16,11 @@ PENALTIES = {
 }
 
 
-def trust_snapshot(evidence, at, window_seconds=180):
+def trust_snapshot(evidence, at, window_seconds=180, *, correlation_policy="legacy"):
     at = pd.to_datetime(at, utc=True)
     start = at - pd.Timedelta(seconds=window_seconds)
     active = [a for a in evidence if start <= pd.Timestamp(a["observed_at"]) <= at]
-    incidents = correlate_alerts(active, window_seconds)
+    incidents = correlate_alerts(active, window_seconds, policy=correlation_policy)
     deductions = []
     for source, (label, cap) in PENALTIES.items():
         matching = [a for a in active if a["source"] == source]

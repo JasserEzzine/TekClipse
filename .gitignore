@@ -13,6 +13,8 @@ tekclipse/data/generated/
 results/
 !docs/phase-a/results/
 !docs/phase-a/results/**
+!docs/phase-a2/results/
+!docs/phase-a2/results/**
 .streamlit/secrets.toml
 .env
 .env.*

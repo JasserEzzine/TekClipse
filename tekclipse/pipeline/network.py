@@ -32,7 +32,7 @@ def fit_network_baseline(nominal):
     }
 
 
-def detect_network_alerts(network, baseline):
+def detect_network_alerts(network, baseline, *, authorized_flows=()):
     """One NET alert per anomalous second; repeated rows are summed, not dropped.
 
     Packet/byte fields are counts per simulator second; traffic_rate has simulator
@@ -60,9 +60,24 @@ def detect_network_alerts(network, baseline):
         reasons.setdefault(ts, []).append(
             f"One-second traffic rise {value:.1f}; threshold {baseline['spike_limit']:.1f}"
         )
+    # Explicit operator registration exempts only category novelty, never volume.
+    # Every field must match; observing a peer repeatedly does not register it.
+    authorized = pd.Series(False, index=network.index)
+    for flow in authorized_flows:
+        if not {"src_ip", "dst_ip", "protocol"}.issubset(flow):
+            raise ValueError("Authorized flows require source, destination and protocol")
+        matching = pd.Series(True, index=network.index)
+        for column in ("src_ip", "dst_ip", "protocol"):
+            matching &= network[column].astype(str).eq(str(flow[column]))
+        times = pd.to_datetime(network.timestamp, utc=True)
+        if flow.get("valid_from"):
+            matching &= times >= pd.to_datetime(flow["valid_from"], utc=True)
+        if flow.get("valid_until"):
+            matching &= times <= pd.to_datetime(flow["valid_until"], utc=True)
+        authorized |= matching
     for column, known in baseline["categories"].items():
         unseen = network.loc[
-            ~network[column].astype(str).isin(known), ["timestamp", column]
+            ~network[column].astype(str).isin(known) & ~authorized, ["timestamp", column]
         ].copy()
         unseen["timestamp"] = pd.to_datetime(unseen.timestamp, utc=True).dt.floor("s")
         for ts, values in unseen.groupby("timestamp")[column]:

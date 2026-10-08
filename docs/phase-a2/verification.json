@@ -1,0 +1,480 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "e1f8b64",
+  "tests": {
+    "total": 65,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 109.631
+  },
+  "preserved": {
+    "original_tests": {
+      "files": 13,
+      "changed": []
+    },
+    "phase_a_artifacts": {
+      "files": 30,
+      "changed": []
+    }
+  },
+  "repeat": {
+    "cases": 69,
+    "all_common_measurements_identical": true,
+    "fields": [
+      "comparisons",
+      "security",
+      "dataset_fingerprint",
+      "ml_raw_anomalous_observations",
+      "ml_emitted_alerts"
+    ],
+    "note": "Second run adds paired nominal-counterfactual measurements; no detector tuning between runs. A later main-view profile caption changes presentation source hash only."
+  },
+  "bandit": {
+    "findings": 0
+  },
+  "dependencies": {
+    "packages": 55,
+    "known_vulnerabilities": 0,
+    "pip_check": "passed"
+  },
+  "cli": {
+    "original": "covered by unchanged tests",
+    "phase_a2": "python scripts/run_experiment.py --scenario E7 --hours 24 --profile phase_a2: passed; 117 TP, 812 FP, 85471 TN, 0 FN on display seed 42"
+  },
+  "browser": {
+    "original": {
+      "profile": "original",
+      "screens": [
+        {
+          "file": ".audit\\phase-a2-browser\\original\\e1-nominal-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\original\\e1-nominal-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\original\\e7-critical-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\original\\e7-critical-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        }
+      ],
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80\n/100",
+          "seconds": 1.0194717999984277,
+          "chain": [
+            "Unauthorized command"
+          ]
+        },
+        {
+          "second": 45,
+          "trust": "58\n/100",
+          "seconds": 0.928403600002639,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident"
+          ]
+        },
+        {
+          "second": 86,
+          "trust": "46\n/100",
+          "seconds": 1.3915965999985929,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst"
+          ]
+        },
+        {
+          "second": 100,
+          "trust": "23\n/100",
+          "seconds": 1.0418527000001632,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit"
+          ]
+        },
+        {
+          "second": 120,
+          "trust": "9\n/100",
+          "seconds": 1.0936724999992293,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        },
+        {
+          "second": 160,
+          "trust": "9\n/100",
+          "seconds": 0.9768775000047754,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        },
+        {
+          "second": 180,
+          "trust": "9\n/100",
+          "seconds": 1.3150621999957366,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        }
+      ],
+      "tabs": [
+        "OVERVIEW",
+        "TELEMETRY",
+        "COMMANDS",
+        "NETWORK",
+        "EVENTS",
+        "ALERTS",
+        "SCENARIOS E1\u2013E7",
+        "ABOUT"
+      ],
+      "browser_errors": [],
+      "e7_launch_seconds": 11.956510700001672,
+      "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+    },
+    "phase-a": {
+      "profile": "phase_a",
+      "screens": [
+        {
+          "file": ".audit\\phase-a2-browser\\phase-a\\e1-nominal-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\phase-a\\e1-nominal-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\phase-a\\e7-critical-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\phase-a\\e7-critical-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        }
+      ],
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80\n/100",
+          "seconds": 1.1476475000017672,
+          "chain": [
+            "Unauthorized command"
+          ]
+        },
+        {
+          "second": 45,
+          "trust": "58\n/100",
+          "seconds": 1.0623007000031066,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident"
+          ]
+        },
+        {
+          "second": 86,
+          "trust": "46\n/100",
+          "seconds": 0.9661134999987553,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst"
+          ]
+        },
+        {
+          "second": 100,
+          "trust": "23\n/100",
+          "seconds": 2.586799800003064,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit"
+          ]
+        },
+        {
+          "second": 120,
+          "trust": "9\n/100",
+          "seconds": 1.2318727000019862,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        },
+        {
+          "second": 160,
+          "trust": "9\n/100",
+          "seconds": 1.0882095999986632,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        },
+        {
+          "second": 180,
+          "trust": "9\n/100",
+          "seconds": 1.0022017000010237,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Telemetry deviation",
+            "Subsystem event"
+          ]
+        }
+      ],
+      "tabs": [
+        "OVERVIEW",
+        "TELEMETRY",
+        "COMMANDS",
+        "NETWORK",
+        "EVENTS",
+        "ALERTS",
+        "SCENARIOS E1\u2013E7",
+        "ABOUT"
+      ],
+      "browser_errors": [],
+      "e7_launch_seconds": 1.3542185999976937,
+      "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+    },
+    "hardened": {
+      "profile": "phase_a2",
+      "screens": [
+        {
+          "file": ".audit\\phase-a2-browser\\hardened\\e1-nominal-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\hardened\\e1-nominal-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\hardened\\e7-critical-1920.png",
+          "width": 1920,
+          "height": 1080,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        },
+        {
+          "file": ".audit\\phase-a2-browser\\hardened\\e7-critical-1366.png",
+          "width": 1366,
+          "height": 768,
+          "overflow": {
+            "document": false,
+            "console": false
+          }
+        }
+      ],
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80\n/100",
+          "seconds": 1.089210300000559,
+          "chain": [
+            "Unauthorized command"
+          ]
+        },
+        {
+          "second": 45,
+          "trust": "58\n/100",
+          "seconds": 1.015250999997079,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident"
+          ]
+        },
+        {
+          "second": 86,
+          "trust": "46\n/100",
+          "seconds": 1.034643999999389,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst"
+          ]
+        },
+        {
+          "second": 100,
+          "trust": "23\n/100",
+          "seconds": 1.031501000004937,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit"
+          ]
+        },
+        {
+          "second": 120,
+          "trust": "11\n/100",
+          "seconds": 0.9876952999984496,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Subsystem event"
+          ]
+        },
+        {
+          "second": 160,
+          "trust": "9\n/100",
+          "seconds": 0.9544829000005848,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Subsystem event",
+            "Telemetry deviation"
+          ]
+        },
+        {
+          "second": 180,
+          "trust": "9\n/100",
+          "seconds": 0.9433169000039925,
+          "chain": [
+            "Unauthorized command",
+            "Network anomaly",
+            "Multi-source incident",
+            "Command burst",
+            "Telemetry limit",
+            "Subsystem event",
+            "Telemetry deviation"
+          ]
+        }
+      ],
+      "tabs": [
+        "OVERVIEW",
+        "TELEMETRY",
+        "COMMANDS",
+        "NETWORK",
+        "EVENTS",
+        "ALERTS",
+        "SCENARIOS E1\u2013E7",
+        "ABOUT"
+      ],
+      "browser_errors": [],
+      "e7_launch_seconds": 1.2839829000004102,
+      "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+    }
+  },
+  "environment": {
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.4.4",
+      "pandas": "3.0.3",
+      "scikit-learn": "1.8.0",
+      "streamlit": "1.58.0",
+      "psutil": "7.2.2"
+    }
+  },
+  "pushed": false,
+  "credential_scan": {
+    "tool": "detect-secrets 1.5.0",
+    "findings": 0,
+    "note": "Initial Secret Keyword finding matched a scan-status description in this record, not a credential. Replaced the status string with structured audit metadata and rescanned without exclusions."
+  }
+}

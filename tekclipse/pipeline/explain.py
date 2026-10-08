@@ -46,7 +46,9 @@ def explain_alerts(alerts, data, nominal_features, features):
         subsystems = []
         if source in {"R1", "R2"}:
             subsystems = ["Command channel"]
-        if source == "R2":
+        if source == "R2" and row.get("window_kind") == "rolling60":
+            item["description"] += "; threshold >10 in (t-60s, t]; first observable threshold crossing"
+        elif source == "R2":
             item["observed_at"] = pd.Timestamp(
                 command_times[ts.floor("min")]
             ).isoformat()

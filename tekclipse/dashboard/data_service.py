@@ -25,6 +25,7 @@ from tekclipse.pipeline.network import fit_network_baseline, detect_network_aler
 from tekclipse.pipeline.explain import explain_alerts, detect_system_alerts
 from tekclipse.pipeline.correlation import correlate_alerts
 from tekclipse.config import load_config
+from tekclipse.pipeline.profiles import CONFIG_PATH, fit_profile, infer_profile
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "generated"
 ALERT_COLUMNS = ["timestamp", "source", "severity", "description", "score"]
@@ -49,6 +50,11 @@ def _detector_signature():
         root / "config.yaml",
         Path(__file__),
         root / "tekclipse/evaluation/runner.py",
+        root / "tekclipse/evaluation/profile_evaluation.py",
+        root / "tekclipse/evaluation/scientific_metrics.py",
+        root / "tekclipse/evaluation/study_data.py",
+        root / "tekclipse/evaluation/validated.py",
+        CONFIG_PATH,
     ]
     paths.extend(sorted((root / "tekclipse/pipeline").glob("*.py")))
     paths.extend(sorted((root / "tekclipse/data").glob("*.py")))
@@ -57,7 +63,7 @@ def _detector_signature():
 
 def save_nominal_preview(hours: int, token: str, result: dict):
     """Persist actual detector output for this exact dataset, never fabricated alerts."""
-    if result["scenario"] != "E1":
+    if result["scenario"] != "E1" or result.get("profile", "original") != "original":
         raise ValueError(
             "Only the nominal baseline can be saved as the default preview"
         )
@@ -178,7 +184,7 @@ def load_data(hours: int, token: str) -> dict:
 
 @st.cache_data(max_entries=16, show_spinner=False)
 @serialized_detector
-def detect(hours: int, token: str, scenario: str) -> dict:
+def _detect_cached(hours: int, token: str, scenario: str, profile: str, signature: str) -> dict:
     """Use unchanged public detectors; train only on the separate nominal baseline.
 
     Existing injections have fixed timestamps at noon on Jan 1. Score the entire
@@ -188,6 +194,8 @@ def detect(hours: int, token: str, scenario: str) -> dict:
     started = perf_counter()
     get_scenario(scenario)  # Reject invalid scenario names before any expensive work.
     nominal = load_data(hours, token)
+    if profile != 'original':
+        return _scientific_preview(nominal, scenario, profile, signature, started)
     train, _, cols = prepare_nominal_split(nominal)
     train_features = _feature_matrix(train, cols).select_dtypes(include="number")
     model, train_scores = build_model(
@@ -245,15 +253,55 @@ def detect(hours: int, token: str, scenario: str) -> dict:
         train_samples=len(train),
         evaluated_samples=len(scores),
         security=security,
+        profile='original',
     )
+
+
+def detect(hours: int, token: str, scenario: str, profile: str = 'original') -> dict:
+    return _detect_cached(hours, token, scenario, profile, _detector_signature())
+
+
+@st.cache_resource(max_entries=2, show_spinner=False)
+def scientific_bundle(profile, signature):
+    # Signature is a cache key, including profile JSON and pipeline source.
+    return fit_profile(profile)
+
+
+def _scientific_preview(nominal, scenario, profile, signature, started):
+    bundle = scientific_bundle(profile, signature)
+    data, truth = get_scenario(scenario)(nominal)
+    inferred = infer_profile(bundle, data)
+    scores, threshold = inferred['scores'], bundle['threshold']
+    flagged = scores > threshold
+    edges = np.diff(np.r_[False, flagged, False].astype(int))
+    times = data['telemetry'].timestamp
+    spans = [(times.iloc[a], times.iloc[b-1]+pd.Timedelta(seconds=1))
+             for a,b in zip(np.flatnonzero(edges == 1), np.flatnonzero(edges == -1))]
+    alerts = pd.DataFrame(inferred['evidence'], columns=ALERT_COLUMNS)
+    alerts['timestamp'] = pd.to_datetime(alerts.timestamp, utc=True)
+    security = {k:inferred[k] for k in ('evidence','incidents','window_seconds','correlation_policy')}
+    return dict(alerts=alerts.sort_values('timestamp').reset_index(drop=True),
+                threshold=threshold, latest_score=float(scores[-1]),
+                score_min=float(min(scores.min(), threshold)), score_max=float(max(scores.max(), threshold)),
+                spans=spans, truth=truth, seconds=perf_counter()-started, scenario=scenario,
+                train_samples=bundle['metadata']['train_samples'], evaluated_samples=len(scores),
+                security=security, profile=profile, profile_metadata=bundle['metadata'])
 
 
 @st.cache_data(max_entries=8, show_spinner=False)
 @serialized_detector
-def evaluate_preview(hours: int, token: str, scenario: str):
+def _evaluate_cached(hours: int, token: str, scenario: str, profile: str, signature: str):
     from tekclipse.evaluation.validated import evaluate_held_out
 
+    if profile != 'original':
+        from tekclipse.evaluation.profile_evaluation import evaluate_profile
+        bundle = scientific_bundle(profile, signature)
+        return evaluate_profile(load_data(hours, token), scenario, bundle)
     return evaluate_held_out(load_data(hours, token), scenario)
+
+
+def evaluate_preview(hours: int, token: str, scenario: str, profile: str = 'original'):
+    return _evaluate_cached(hours, token, scenario, profile, _detector_signature())
 
 
 @st.cache_data(max_entries=4, show_spinner=False)

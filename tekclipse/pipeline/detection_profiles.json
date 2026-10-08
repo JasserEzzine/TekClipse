@@ -1,0 +1,31 @@
+{
+  "phase_a": {
+    "hours": 24,
+    "training_seed": 101,
+    "calibration_seed": 202,
+    "model_seed": 42,
+    "feature_mode": "all21",
+    "quantile": 0.975,
+    "network_training_seed": 101,
+    "r2_mode": "fixed",
+    "correlation_policy": "legacy",
+    "correlation_window_seconds": 180,
+    "authorized_flows": []
+  },
+  "phase_a2": {
+    "hours": 24,
+    "training_seed": 501,
+    "calibration_seed": 502,
+    "model_seed": 42,
+    "feature_mode": "noise21",
+    "quantile": 0.99,
+    "network_training_seed": 101,
+    "r2_mode": "rolling",
+    "correlation_policy": "supported",
+    "correlation_window_seconds": 180,
+    "authorized_flows": [
+      {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.5", "protocol": "TCP"},
+      {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.6", "protocol": "UDP"}
+    ]
+  }
+}

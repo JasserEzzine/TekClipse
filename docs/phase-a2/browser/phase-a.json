@@ -1,0 +1,139 @@
+{
+  "profile": "phase_a",
+  "screens": [
+    {
+      "file": ".audit\\phase-a2-browser\\phase-a\\e1-nominal-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "overflow": {
+        "document": false,
+        "console": false
+      }
+    },
+    {
+      "file": ".audit\\phase-a2-browser\\phase-a\\e1-nominal-1366.png",
+      "width": 1366,
+      "height": 768,
+      "overflow": {
+        "document": false,
+        "console": false
+      }
+    },
+    {
+      "file": ".audit\\phase-a2-browser\\phase-a\\e7-critical-1920.png",
+      "width": 1920,
+      "height": 1080,
+      "overflow": {
+        "document": false,
+        "console": false
+      }
+    },
+    {
+      "file": ".audit\\phase-a2-browser\\phase-a\\e7-critical-1366.png",
+      "width": 1366,
+      "height": 768,
+      "overflow": {
+        "document": false,
+        "console": false
+      }
+    }
+  ],
+  "stages": [
+    {
+      "second": 20,
+      "trust": "80\n/100",
+      "seconds": 1.1476475000017672,
+      "chain": [
+        "Unauthorized command"
+      ]
+    },
+    {
+      "second": 45,
+      "trust": "58\n/100",
+      "seconds": 1.0623007000031066,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident"
+      ]
+    },
+    {
+      "second": 86,
+      "trust": "46\n/100",
+      "seconds": 0.9661134999987553,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident",
+        "Command burst"
+      ]
+    },
+    {
+      "second": 100,
+      "trust": "23\n/100",
+      "seconds": 2.586799800003064,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident",
+        "Command burst",
+        "Telemetry limit"
+      ]
+    },
+    {
+      "second": 120,
+      "trust": "9\n/100",
+      "seconds": 1.2318727000019862,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident",
+        "Command burst",
+        "Telemetry limit",
+        "Telemetry deviation",
+        "Subsystem event"
+      ]
+    },
+    {
+      "second": 160,
+      "trust": "9\n/100",
+      "seconds": 1.0882095999986632,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident",
+        "Command burst",
+        "Telemetry limit",
+        "Telemetry deviation",
+        "Subsystem event"
+      ]
+    },
+    {
+      "second": 180,
+      "trust": "9\n/100",
+      "seconds": 1.0022017000010237,
+      "chain": [
+        "Unauthorized command",
+        "Network anomaly",
+        "Multi-source incident",
+        "Command burst",
+        "Telemetry limit",
+        "Telemetry deviation",
+        "Subsystem event"
+      ]
+    }
+  ],
+  "tabs": [
+    "OVERVIEW",
+    "TELEMETRY",
+    "COMMANDS",
+    "NETWORK",
+    "EVENTS",
+    "ALERTS",
+    "SCENARIOS E1\u2013E7",
+    "ABOUT"
+  ],
+  "browser_errors": [],
+  "e7_launch_seconds": 1.3542185999976937,
+  "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+}

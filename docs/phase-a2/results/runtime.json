@@ -1,0 +1,10 @@
+{
+  "seconds": 232.70591609999974,
+  "memory": {
+    "start_rss_mb": 231.63671875,
+    "sampled_peak_rss_mb": 339.265625,
+    "sampled_increment_mb": 107.62890625,
+    "interval_seconds": 0.02,
+    "note": "Whole process RSS sampled, not an exact allocator peak; includes evaluation work."
+  }
+}

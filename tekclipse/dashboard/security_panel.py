@@ -67,13 +67,14 @@ def render_security_panel(result, prefix="overview", view=None):
     else:
         at = ONSET + pd.Timedelta(seconds=160)
     window = security["window_seconds"]
-    snapshot = trust_snapshot(evidence, at, window)
+    policy = security.get('correlation_policy', 'legacy')
+    snapshot = trust_snapshot(evidence, at, window, correlation_policy=policy)
     briefing = mission_briefing(snapshot, view)
     history = []
     if scenario == "E7":
         points = sorted({s for s, _ in STAGES if s <= second} | {second})
         history = [
-            trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window)
+            trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window, correlation_policy=policy)
             for s in points
         ]
     st.html(mission_console(snapshot, briefing, history))
@@ -145,7 +146,7 @@ def render_security_panel(result, prefix="overview", view=None):
             points = [s for s, _ in STAGES if s <= second]
             points = sorted(set(points + [second]))
             history = [
-                trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window)
+                trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window, correlation_policy=policy)
                 for s in points
             ]
             st.plotly_chart(

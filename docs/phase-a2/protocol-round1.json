@@ -1,0 +1,30 @@
+{
+  "version": "A.2-1",
+  "hours": 24,
+  "training_seed": 501,
+  "calibration_seed": 502,
+  "validation_seeds": [503, 504],
+  "test_seeds": [601, 602, 603],
+  "regression_test_seeds": [301, 302, 303],
+  "model_seed": 42,
+  "feature_candidates": ["all21", "means7", "relationships9"],
+  "quantile_candidates": [0.975, 0.99, 0.995, 0.999],
+  "validation_cases": ["E1", "E5", "E7", "benign_telemetry", "nominal_thermal_regime", "nominal_power_regime", "operational_thermal_drift", "operational_power_relationship", "operational_voltage_relationship"],
+  "novel_cases": ["nominal_thermal_regime", "nominal_power_regime", "operational_thermal_drift", "operational_power_relationship", "operational_voltage_relationship"],
+  "novel_start_seconds": 32430,
+  "novel_duration_seconds": 600,
+  "thermal_ramp_seconds": 300,
+  "thermal_drift_c": 12.0,
+  "power_relationship_w": 8.0,
+  "voltage_relationship_v": -0.15,
+  "nominal_temperature_offset_c": 1.5,
+  "nominal_power_offset_w": 3.0,
+  "selection": "Require ML event coverage in validation E5/E7 and all three new operational variants on both seeds; among eligible candidates minimize ML false-positive seconds on E1, benign_telemetry and both unseen nominal regimes, then minimize mean operational event delay, then deterministic mode/quantile order. If none qualify, retain Phase A ML and report failure. No final-test tuning.",
+  "r2_mode": "rolling",
+  "correlation_policy": "supported",
+  "correlation_window_seconds": 180,
+  "authorized_flows": [
+    {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.5", "protocol": "TCP"},
+    {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.6", "protocol": "UDP"}
+  ]
+}

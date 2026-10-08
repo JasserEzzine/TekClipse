@@ -14,11 +14,20 @@ DOMAINS = {
 }
 
 
-def correlate_alerts(evidence, window_seconds=180):
+def correlate_alerts(evidence, window_seconds=180, *, policy="legacy"):
+    if policy not in {"legacy", "supported"}:
+        raise ValueError("Unknown correlation policy")
     if not 1 <= window_seconds <= 3600:
         raise ValueError("Correlation window must be 1..3600 seconds")
     if not evidence:
         return []
+    if policy == "supported":
+        unique = {}
+        for alert in evidence:
+            if alert["id"] in unique and unique[alert["id"]] != alert:
+                raise ValueError("Conflicting evidence shares an alert id")
+            unique[alert["id"]] = alert
+        evidence = list(unique.values())
     ordered = sorted(evidence, key=lambda a: (pd.Timestamp(a["observed_at"]), a["id"]))
     # Seed at actionable evidence, not background ML. Include subsequent evidence
     # only within the same bounded window; each alert belongs to at most one group.
@@ -33,9 +42,11 @@ def correlate_alerts(evidence, window_seconds=180):
             for a in ordered
             if a["id"] not in consumed
             and start <= pd.Timestamp(a["observed_at"]) <= start + delta
+            and (policy == "legacy" or a.get("asset_id") == seed.get("asset_id"))
         ]
         consumed.update(a["id"] for a in group)
-        sources = sorted({DOMAINS.get(a["source"], "Other") for a in group})
+        supporting = [a for a in group if policy == "legacy" or a["source"] != "ML"]
+        sources = sorted({DOMAINS.get(a["source"], "Other") for a in supporting})
         if len(sources) < 2:
             continue
         detectors = sorted({a["source"] for a in group})
@@ -45,11 +56,11 @@ def correlate_alerts(evidence, window_seconds=180):
             100,
             20 * len(sources)
             + 5 * len(set(detectors) - {"ML"})
-            + (10 if any(a["severity"] == "CRITICAL" for a in group) else 0),
+            + (10 if any(a["severity"] == "CRITICAL" for a in supporting) else 0),
         )
         severity = "CRITICAL" if len(sources) >= 3 and score >= 75 else "HIGH"
         first_by_domain = {}
-        for a in group:
+        for a in supporting:
             first_by_domain.setdefault(
                 DOMAINS.get(a["source"], "Other"), a["observed_at"]
             )
@@ -65,7 +76,8 @@ def correlate_alerts(evidence, window_seconds=180):
                 severity=severity,
                 correlation_score=score,
                 explanation=f"{', '.join(sources)} evidence within {window_seconds}s; "
-                f"detectors {', '.join(detectors)}. Temporal association, not confirmed attack attribution.",
+                f"detectors {', '.join(detectors)}. Temporal association, not confirmed attack attribution."
+                + (" ML is context only; independent non-ML domains establish severity." if policy == "supported" else ""),
             )
         )
     return groups

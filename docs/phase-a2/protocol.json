@@ -1,0 +1,31 @@
+{
+  "version": "A.2-3",
+  "hours": 24,
+  "training_seed": 501,
+  "calibration_seed": 502,
+  "validation_seeds": [503, 504],
+  "test_seeds": [601, 602, 603],
+  "regression_test_seeds": [301, 302, 303],
+  "model_seed": 42,
+  "feature_candidates": ["all21", "means7", "relationships9", "context3", "noise21"],
+  "quantile_candidates": [0.975, 0.99, 0.995, 0.999],
+  "validation_cases": ["E1", "E5", "E7", "benign_telemetry", "nominal_thermal_regime", "nominal_power_regime", "operational_thermal_drift", "operational_power_relationship", "operational_voltage_relationship"],
+  "novel_cases": ["nominal_thermal_regime", "nominal_power_regime", "operational_thermal_drift", "operational_power_relationship", "operational_voltage_relationship"],
+  "novel_start_seconds": 32430,
+  "novel_duration_seconds": 600,
+  "thermal_ramp_seconds": 300,
+  "thermal_drift_c": 12.0,
+  "power_relationship_w": 8.0,
+  "voltage_relationship_v": -0.15,
+  "nominal_temperature_offset_c": 1.5,
+  "nominal_power_offset_w": 3.0,
+  "selection": "Require ML event coverage in validation E5/E7 on both seeds and fewer aggregate ML false-positive seconds on E1, benign_telemetry and both unseen nominal regimes than the all21 q.975 validation reference. Minimize those false-positive seconds, then maximize operational-event coverage, then deterministic mode/quantile order. New operational coverage is measured separately and is not a claim of cyberattack coverage. If none qualify retain Phase A ML. No final-test tuning.",
+  "noise21_nominal_augmentation": {"temperature_sd": 0.5, "cpu_sd": 1.0, "alternating_block_seconds": 5400, "rng_seed_offset": 20000},
+  "r2_mode": "rolling",
+  "correlation_policy": "supported",
+  "correlation_window_seconds": 180,
+  "authorized_flows": [
+    {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.5", "protocol": "TCP"},
+    {"src_ip": "10.0.0.99", "dst_ip": "10.1.0.6", "protocol": "UDP"}
+  ]
+}

@@ -30,13 +30,31 @@ Screenshots are captured from the working app, not design mockups. [Media proven
 
 ## Phase A: scientific evaluation
 
-The local Phase A package adds independent training/calibration/validation/test runs, explicit second/event/incident metrics, component comparisons, ablations and benign/attack robustness cases. It preserves the existing dashboard and trust formula. The calibrated IF profile is **opt-in for scientific evaluation**; it does not silently change the dashboard preview.
+The local Phase A package adds independent training/calibration/validation/test runs, explicit second/event/incident metrics, component comparisons, ablations and benign/attack robustness cases. It preserves the existing dashboard and trust formula. At Phase A, calibration was **opt-in for scientific evaluation**. Phase A.2 below also makes that profile explicitly selectable in the dashboard; the default preview remains unchanged.
 
 ```powershell
 python scripts/run_experiment.py --scientific --output results/phase-a
 ```
 
 Read the [baseline audit](docs/phase-a/baseline.md), [evaluation protocol](docs/phase-a/protocol.md), [measured results and limitations](docs/phase-a/report.md), and [team handover](docs/phase-a/handover.md). These distinguish false-positive seconds from false-alarm episodes and attack-event coverage. The original E7 benchmark remains reproducible through the existing single-scenario CLI.
+
+## Phase A.2: reliability and explicit detection profiles
+
+Phase A.2 adds a rolling 60-second command-flood detector, explicit authorized network flows, more conservative correlation, and selectable scientific profiles. **Original preview remains the dashboard default.** Open the sidebar and select **Phase A.2 hardened (experimental)** to use the new profile; its active name is also visible in the main view. All eight tabs, E1–E7, replay, Reset, storage and the Trust Indicator remain available.
+
+On the same frozen three-seed E7 benchmark, false-positive seconds fall **7,254 → 2,732 (62.34% below Phase A)**, precision improves **4.62% → 11.39%**, and source-matched event coverage remains **18/18**. Boundary-crossing floods improve from **0/3 → 3/3 detected**. Explicit peer registration removes 270 benign network novelty alarms without disabling volume checks.
+
+The project still uses **Isolation Forest machine learning**. It is experimental supporting evidence: removing ML still gives perfect results on these known E7 injections. On new operational deviations below fixed-rule limits, the hardened ML adds only **3/9 events**, versus 6/9 for Phase A, and misses moderate thermal drift. Fewer false alarms therefore come with a sensitivity trade-off. None of these results validates a real satellite or proves an attack.
+
+```powershell
+# Same scientific configuration as the selected dashboard profile
+python scripts/run_experiment.py --scenario E7 --hours 24 --profile phase_a2
+
+# Full frozen comparison; use a new output directory
+python scripts/benchmark_phase_a2.py --output results/phase-a2-reproduction
+```
+
+The CLI command above evaluates independent display seed 42; published benchmark numbers use separate frozen test seeds. Read the [Phase A.2 report](docs/phase-a2/report.md), [complete before/after measurements](docs/phase-a2/metrics.md), [validation decisions including rejected candidates](docs/phase-a2/validation-decisions.md), and [run/reproduction handover](docs/phase-a2/handover.md). The original Phase A results remain preserved.
 
 ## Challenge and space context
 

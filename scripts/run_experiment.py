@@ -20,6 +20,8 @@ def parse_args():
         "--scenario", choices=["E1", "E2", "E3", "E4", "E5", "E6", "E7"], default="E1"
     )
     parser.add_argument("--hours", type=int, default=24)
+    parser.add_argument('--profile', choices=['original', 'phase_a', 'phase_a2'], default='original',
+                        help='Explicit detector profile; original preserves the historical evaluation')
     parser.add_argument("--scientific", action="store_true", help="Run the independent-run Phase A protocol instead of the historical single-scenario evaluation")
     parser.add_argument("--stage", choices=["all", "validation", "test"], default="all")
     parser.add_argument("--protocol", type=Path, default=ROOT / "docs/phase-a/protocol.json")
@@ -29,6 +31,8 @@ def parse_args():
 
 def run_selected():
     args = parse_args()
+    if args.scientific and args.profile != 'original':
+        raise ValueError('--scientific is the archived Phase A protocol; use --profile alone or scripts/benchmark_phase_a2.py')
     if args.scientific:
         from tekclipse.evaluation.scientific import run_study
 
@@ -36,8 +40,15 @@ def run_selected():
         print(f"Scientific evaluation saved: {path}")
         return
     data = generate_synthetic_dataset(hours=args.hours, persist=False)
-    result = evaluate_held_out(data, args.scenario)
-    path = save_json(result, f"{args.scenario}-held-out.json")
+    if args.profile == 'original':
+        result = evaluate_held_out(data, args.scenario)
+        filename = f"{args.scenario}-held-out.json"
+    else:
+        from tekclipse.evaluation.profile_evaluation import evaluate_profile
+        from tekclipse.pipeline.profiles import fit_profile
+        result = evaluate_profile(data, args.scenario, fit_profile(args.profile))
+        filename = f'{args.scenario}-{args.profile}-held-out.json'
+    path = save_json(result, filename)
     if result["available"]:
         print(result["method"])
         for name, metrics in result["comparisons"].items():

@@ -105,22 +105,34 @@ with st.sidebar:
     if cloud_demo:
         st.caption("Hosted demo: 1 or 7 days. The local app supports up to 30 days.")
     st.caption("Select a shorter range for faster detector previews.")
+    from tekclipse.pipeline.profiles import PROFILE_LABELS
+    profile = st.selectbox('Detection profile', list(PROFILE_LABELS),
+                           format_func=PROFILE_LABELS.get, key='detection_profile')
+    st.caption(f'Active: {PROFILE_LABELS[profile]}')
+    if profile != 'original':
+        st.caption('Independent nominal fit and calibration. Synthetic research profile; not production validated. Published tests cover 24-hour runs.')
+        if days != 1:
+            st.info('This longer preview is outside the validated 24-hour experiment range.')
 hours = days * 24
 token = dataset_token(hours)
-run_key = (hours, token)
+run_key = (hours, token, profile)
 if st.session_state.get("run_key") != run_key:
     st.session_state["run_key"] = run_key
-    st.session_state["result"] = load_nominal_preview(hours, token)
+    for state_key in ('validated_evaluation', 'evaluation_key', 'pending_evaluation',
+                      'pending_scenario', 'overview_replay_second', 'scenarios_replay_second'):
+        st.session_state.pop(state_key, None)
+    st.session_state['guided_demo'] = False
+    st.session_state["result"] = load_nominal_preview(hours, token) if profile == 'original' else detect(hours, token, 'E1', profile)
     st.session_state["scenario"] = "E1"
 elif st.session_state.get("result") is None:
-    st.session_state["result"] = load_nominal_preview(hours, token)
+    st.session_state["result"] = load_nominal_preview(hours, token) if profile == 'original' else detect(hours, token, 'E1', profile)
 pending_scenario = st.session_state.pop("pending_scenario", None)
 if pending_scenario is not None:
     with st.spinner(
         f"Running {pending_scenario}: nominal-only training, then full-resolution rules + IF…"
     ):
-        output = detect(hours, token, pending_scenario)
-        if pending_scenario == "E1":
+        output = detect(hours, token, pending_scenario, profile)
+        if pending_scenario == "E1" and profile == 'original':
             save_nominal_preview(hours, token, output)
     st.session_state["result"] = output
     st.session_state["scenario"] = pending_scenario
@@ -129,7 +141,7 @@ result = st.session_state.get("result")
 if st.session_state.pop("pending_evaluation", False):
     with st.spinner("Running labeled held-out comparison…"):
         st.session_state["validated_evaluation"] = evaluate_preview(
-            hours, token, scenario
+            hours, token, scenario, profile
         )
         st.session_state["evaluation_key"] = (run_key, scenario)
 with st.spinner("Loading mission streams…"):
@@ -157,6 +169,9 @@ with st.sidebar:
     st.caption(
         "Network baseline + explicit subsystem-event checks + temporal correlation."
     )
+    if result and result.get('profile_metadata'):
+        with st.expander('Scientific profile / reproducibility and authorized flows'):
+            st.json(result['profile_metadata'])
     # Wall clock retained separately from the simulation review UTC.
     # Bounded, one-second clock only; starfield is pure CSS.
     st.iframe(
@@ -230,6 +245,7 @@ names = [
     "SCENARIOS E1–E7",
     "ABOUT",
 ]
+st.caption(f'Detection profile: {PROFILE_LABELS[profile]} · Published scientific results use independent test seeds; this preview uses seed 42.')
 tabs = st.tabs(names, key="mission_tabs", on_change="rerun")
 # Stateful tabs render only their active content; heavy charts do not run offscreen.
 if tabs[0].open:
@@ -578,6 +594,7 @@ if tabs[5].open:
                 st.success("No deviations detected by these detectors in this preview.")
             st.caption(
                 "Preview scores overlap the nominal training timeline. Use the separate held-out evaluation in Scenarios for explicitly labeled synthetic measurements."
+                if profile == 'original' else 'Scientific profile uses independent nominal seeds. These display-seed results are separate from the published frozen benchmark.'
             )
 
 if tabs[6].open:
@@ -609,6 +626,7 @@ if tabs[6].open:
                 st.button(f"Run {code}", key=f"run_{code}", on_click=run, args=(code,))
         st.info(
             "Preview training uses the untouched nominal baseline. The separate evaluation below uses a non-overlapping split and explicit synthetic labels."
+            if profile == 'original' else 'The selected scientific profile is fitted and calibrated on independent nominal runs, then applied unchanged to this scenario. No displayed attack data is used for training.'
         )
         if result:
             st.write(
@@ -626,6 +644,7 @@ if tabs[6].open:
         st.markdown("### Held-out synthetic evaluation")
         st.caption(
             "Separate from the preview: fit on the first six nominal hours, score later samples against explicit injected windows. A run can take time. Undefined metrics are left blank."
+            if profile == 'original' else 'Evaluate the selected scientific profile on independent display seed 42 using the same fitted model and threshold as the preview. Official published metrics use different frozen test seeds.'
         )
         st.button(
             "Evaluate selected scenario",

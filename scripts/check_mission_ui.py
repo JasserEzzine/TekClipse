@@ -10,7 +10,10 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 def require(condition, detail):
@@ -25,9 +28,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8503")
     parser.add_argument("--output", type=Path, default=Path(".audit/mission-browser"))
+    parser.add_argument('--profile', choices=['original', 'phase_a', 'phase_a2'], default='original')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    report = {"screens": [], "stages": [], "tabs": [], "browser_errors": []}
+    report = {"profile": args.profile, "screens": [], "stages": [], "tabs": [], "browser_errors": []}
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(channel="msedge", headless=True)
         page = browser.new_page(
@@ -42,7 +46,20 @@ def main():
         )
 
         def settle():
+            # Allow the widget event to reach Streamlit before checking completion.
+            # Otherwise a hidden status widget from the previous render can race
+            # the next tab click and leave the test inspecting stale content.
+            page.wait_for_timeout(300)
             page.locator('[data-testid="stStatusWidget"]').wait_for(state="hidden")
+
+        if args.profile != 'original':
+            from tekclipse.pipeline.profiles import PROFILE_LABELS
+            page.locator('[data-testid="stExpandSidebarButton"]').click()
+            page.get_by_role('combobox').nth(1).click()
+            page.get_by_role('option', name=PROFILE_LABELS[args.profile], exact=True).click()
+            page.get_by_text(f'Active: {PROFILE_LABELS[args.profile]}', exact=True).wait_for()
+            settle()
+            page.locator('[data-testid="stSidebarCollapseButton"]').click()
 
         def capture(name, width, height):
             page.set_viewport_size({"width": width, "height": height})
@@ -117,11 +134,13 @@ def main():
         require(len(names) == 8, names)
         for name in names:
             page.get_by_role("tab", name=name, exact=True).click()
+            expect(page.get_by_role('tab', name=name, exact=True)).to_have_attribute('aria-selected', 'true')
             settle()
             require(page.locator('[data-testid="stException"]').count() == 0, name)
             report["tabs"].append(name)
         page.get_by_role("tab", name="OVERVIEW", exact=True).click()
         settle()
+        expect(page.get_by_role('button', name='Reset demo', exact=True)).to_be_visible()
         require(page.locator("iframe").count() >= 1, "Original orbit iframe missing")
         page.get_by_role("button", name="Reset demo", exact=True).click()
         # A hidden status widget can precede the next Streamlit rerender. Wait
