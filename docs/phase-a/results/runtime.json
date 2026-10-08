@@ -1,0 +1,28 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "logical_cpus": 12,
+    "physical_cpus": 6,
+    "installed_ram_mb": 32469.66015625,
+    "packages": {
+      "numpy": "2.4.4",
+      "pandas": "3.0.3",
+      "scikit-learn": "1.8.0",
+      "psutil": "7.2.2",
+      "streamlit": "1.58.0"
+    }
+  },
+  "fit_and_calibration_seconds": 1.1842264999995677,
+  "total_seconds": 625.6061542999996,
+  "memory": {
+    "start_rss_mb": 163.97265625,
+    "sampled_peak_rss_mb": 306.94921875,
+    "sampled_increment_mb": 142.9765625,
+    "interval_seconds": 0.02,
+    "note": "Whole process RSS sampled, not an exact allocator peak; includes evaluation work."
+  },
+  "note": "Batch detector processing excludes data generation, model fitting, explanation, correlation and metrics; each is labeled separately. Not stream ingestion latency."
+}

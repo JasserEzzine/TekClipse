@@ -28,6 +28,16 @@ The project is an engineering/research prototype for **IASTAM 6.0, Track 5 — C
 
 Screenshots are captured from the working app, not design mockups. [Media provenance and recording guidance](docs/assets/README.md) · [Mission-control implementation and validation](docs/mission-control.md).
 
+## Phase A: scientific evaluation
+
+The local Phase A package adds independent training/calibration/validation/test runs, explicit second/event/incident metrics, component comparisons, ablations and benign/attack robustness cases. It preserves the existing dashboard and trust formula. The calibrated IF profile is **opt-in for scientific evaluation**; it does not silently change the dashboard preview.
+
+```powershell
+python scripts/run_experiment.py --scientific --output results/phase-a
+```
+
+Read the [baseline audit](docs/phase-a/baseline.md), [evaluation protocol](docs/phase-a/protocol.md), [measured results and limitations](docs/phase-a/report.md), and [team handover](docs/phase-a/handover.md). These distinguish false-positive seconds from false-alarm episodes and attack-event coverage. The original E7 benchmark remains reproducible through the existing single-scenario CLI.
+
 ## Challenge and space context
 
 A satellite's operational behavior depends on commands, communication, onboard processing, power and thermal conditions. An unusual reading alone does not explain whether an operator should trust the whole system. TekClipse brings those observations together and translates supported security evidence into clearly labeled **potential** mission consequences. The project has passed its research-paper selection stage; this repository presents the reproducible prototype for the next phase.
@@ -109,7 +119,7 @@ The generator models a 90-minute orbital cycle and recurring ground-station pass
 
 | Layer | Behavior |
 |---|---|
-| R1 | Simplified command-source/authorization check; detects the demonstrated `UNKNOWN_1` source. It is not a complete production authorization policy. |
+| R1 | Flags `UNKNOWN_1` or an explicit false authorization flag, including `GS_PRIMARY`. Missing authorization keeps the legacy default; this is not a complete production authorization policy. |
 | R2 | Flags more than 10 commands in a one-minute bin. |
 | R3 | Flags temperature above 85 °C or voltage outside 26–30 V. |
 | Isolation Forest | Scores raw telemetry and its 60-sample rolling means/standard deviations against nominal training data. |
@@ -177,7 +187,7 @@ Precision, recall, F1 and false-positive rate use one-second bins: a positive pr
 
 The comparison is **R1–R3 only / telemetry IF only / hybrid (rules + IF + NET + SYS)**. Detector coverage differs, so this is an operational comparison, not a controlled ablation. Temporal hits do not establish correct causal attribution. E7's extended network interval includes its later stages; interval detection rate does not mean every stage was detected. Synthetic results do not establish real satellite accuracy. Correlation/trust are not classifiers in this benchmark.
 
-The legacy evaluator remains callable for compatibility, but now marks its onset-only performance metrics unavailable (`NaN`) instead of presenting invalid counts. CPU/RAM overhead and real-world validation remain future work.
+The legacy evaluator remains callable for compatibility, but now marks its onset-only performance metrics unavailable (`NaN`) instead of presenting invalid counts. The Phase A scientific package separately measures batch runtime and sampled process memory; real-world validation remains future work.
 
 ## Demonstrate E7 in 2–3 minutes
 
@@ -289,6 +299,6 @@ python scripts/check_mission_ui.py --url http://127.0.0.1:8503
 
 Start Streamlit on that port first, or pass its actual URL. This checks all tabs and both 1920×1080 and 1366×768 layouts and records actual screenshots and transition timings.
 
-The research roadmap is to validate more diverse held-out missions, tune thresholds without test leakage, measure incremental CPU/RAM overhead and compare controlled detector ablations. Negative and inconclusive outcomes should be reported alongside successful cases. The current network detector uses a fixed nominal envelope and can flag legitimate new peers/protocols; correlation uses time proximity, not authenticated identity or a causal graph.
+Phase A adds independent-run calibration, controlled ablations and batch runtime/process-memory measurements. The remaining research roadmap is to validate more diverse missions and measure deployment-specific CPU and memory overhead. Negative and inconclusive outcomes should be reported alongside successful cases. The current network detector uses a fixed nominal envelope and can flag legitimate new peers/protocols; correlation uses time proximity, not authenticated identity or a causal graph.
 
 Fonts are bundled under `tekclipse/dashboard/assets/` with their SIL Open Font License texts. This is a simulation-based feasibility investigation, not a production satellite cybersecurity system.

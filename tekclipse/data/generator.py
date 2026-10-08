@@ -25,7 +25,8 @@ def _safe_resolve(path: str | Path | None = None) -> Path:
 
 
 def generate_synthetic_dataset(
-    hours: int = 168, output_dir: str | Path | None = None, *, persist: bool = True
+    hours: int = 168, output_dir: str | Path | None = None, *, persist: bool = True,
+    seed: int = SEED,
 ) -> dict[str, pd.DataFrame]:
     """Vectorized synthetic operations, not a physical flight model.
 
@@ -38,7 +39,9 @@ def generate_synthetic_dataset(
     cfg = load_config()
     if cfg["simulation"].get("hz", 1) != 1:
         raise ValueError("The generator and existing rolling features require 1 Hz")
-    rng = np.random.default_rng(SEED)
+    if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
+        raise ValueError("seed must be a nonnegative integer")
+    rng = np.random.default_rng(seed)
     n = hours * 3600
     t = np.arange(n)
     timestamps = pd.date_range("2026-01-01", periods=n, freq="s", tz="UTC")
@@ -284,7 +287,7 @@ def generate_synthetic_dataset(
             version=GENERATOR_VERSION,
             hours=hours,
             hz=1,
-            seed=SEED,
+            seed=seed,
             start=timestamps[0].isoformat(),
             end=timestamps[-1].isoformat(),
             counts={name: len(df) for name, df in outputs.items()},

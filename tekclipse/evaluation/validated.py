@@ -46,6 +46,23 @@ def labeled_metrics(timeline, truth, alert_times, intervals):
             reason="Complete explicit boolean ground-truth labels and an ordered unique timeline are required.",
         )
     truth = np.asarray(truth, dtype=bool)
+    if timeline.tz is None or (len(timeline) > 1 and not (
+        timeline[1:] - timeline[:-1] == pd.Timedelta(seconds=1)
+    ).all()):
+        return dict(available=False, reason="A timezone-aware complete 1 Hz timeline is required.")
+    timeline = timeline.tz_convert("UTC")
+    labeled = np.zeros(len(timeline), dtype=bool)
+    previous_end = None
+    for start, end in intervals:
+        start, end = pd.Timestamp(start), pd.Timestamp(end)
+        if (start.tzinfo is None or end.tzinfo is None or start > end
+                or start not in timeline or end not in timeline
+                or (previous_end is not None and start <= previous_end)):
+            return dict(available=False, reason="Intervals must be ordered, disjoint, in-range whole seconds.")
+        labeled |= (timeline >= start) & (timeline <= end)
+        previous_end = end
+    if not np.array_equal(labeled, truth):
+        return dict(available=False, reason="Explicit intervals and per-second truth disagree.")
     times = pd.DatetimeIndex(pd.to_datetime(list(alert_times), utc=True)).floor("s")
     predicted = timeline.isin(times)
     tp, fp = int((truth & predicted).sum()), int((~truth & predicted).sum())

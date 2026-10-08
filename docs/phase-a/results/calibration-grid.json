@@ -1,0 +1,507 @@
+{
+  "selected_quantile": 0.975,
+  "selection": "Largest tested quantile reducing FP while retaining every original source-matched ML event on validation runs. This does not preserve sample recall or detection delay.",
+  "rows": [
+    {
+      "seed": 203,
+      "scenario": "E1",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E1",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E1",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E1",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E1",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E2",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E2",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E2",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E2",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E2",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E3",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E3",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E3",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E3",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E3",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E4",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E4",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E4",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E4",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E4",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [],
+      "candidate_detected_events": [],
+      "original_tp": 0,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E5",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [
+        "E5:thermal"
+      ],
+      "original_tp": 27,
+      "candidate_tp": 27,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E5",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [
+        "E5:thermal"
+      ],
+      "original_tp": 27,
+      "candidate_tp": 3,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E5",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E5",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E5",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E6",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [
+        "E5:thermal"
+      ],
+      "original_tp": 27,
+      "candidate_tp": 27,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E6",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [
+        "E5:thermal"
+      ],
+      "original_tp": 27,
+      "candidate_tp": 3,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E6",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E6",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E6",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [
+        "E5:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 27,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": false
+    },
+    {
+      "seed": 203,
+      "scenario": "E7",
+      "quantile": 0.95,
+      "threshold": -0.0013906112935291187,
+      "original_detected_events": [
+        "E7:thermal"
+      ],
+      "candidate_detected_events": [
+        "E7:thermal"
+      ],
+      "original_tp": 36,
+      "candidate_tp": 56,
+      "original_fp": 4550,
+      "candidate_fp": 4421,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E7",
+      "quantile": 0.975,
+      "threshold": 0.011108109484607038,
+      "original_detected_events": [
+        "E7:thermal"
+      ],
+      "candidate_detected_events": [
+        "E7:thermal"
+      ],
+      "original_tp": 36,
+      "candidate_tp": 53,
+      "original_fp": 4550,
+      "candidate_fp": 2348,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E7",
+      "quantile": 0.99,
+      "threshold": 0.026610781728705648,
+      "original_detected_events": [
+        "E7:thermal"
+      ],
+      "candidate_detected_events": [
+        "E7:thermal"
+      ],
+      "original_tp": 36,
+      "candidate_tp": 28,
+      "original_fp": 4550,
+      "candidate_fp": 954,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E7",
+      "quantile": 0.995,
+      "threshold": 0.03866172682812302,
+      "original_detected_events": [
+        "E7:thermal"
+      ],
+      "candidate_detected_events": [
+        "E7:thermal"
+      ],
+      "original_tp": 36,
+      "candidate_tp": 6,
+      "original_fp": 4550,
+      "candidate_fp": 420,
+      "preserves_ml_events": true
+    },
+    {
+      "seed": 203,
+      "scenario": "E7",
+      "quantile": 0.999,
+      "threshold": 0.05767627523749458,
+      "original_detected_events": [
+        "E7:thermal"
+      ],
+      "candidate_detected_events": [],
+      "original_tp": 36,
+      "candidate_tp": 0,
+      "original_fp": 4550,
+      "candidate_fp": 94,
+      "preserves_ml_events": false
+    }
+  ]
+}

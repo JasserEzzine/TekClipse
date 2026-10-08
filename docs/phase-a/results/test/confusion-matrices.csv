@@ -1,0 +1,177 @@
+case,method,tp,fp,tn,fn
+E1,Rules only,0,0,259200,0
+E1,ML original,0,14128,245072,0
+E1,ML calibrated,0,7249,251951,0
+E1,Network only,0,0,259200,0
+E1,System only,0,0,259200,0
+E1,Original hybrid,0,14128,245072,0
+E1,Full-day uncalibrated hybrid,0,12829,246371,0
+E1,Improved hybrid,0,7249,251951,0
+E1,Without ML,0,0,259200,0
+E1,Without network,0,7249,251951,0
+E1,Without rules,0,7249,251951,0
+E2,Rules only,3,0,259197,0
+E2,ML original,0,14128,245069,3
+E2,ML calibrated,0,7249,251948,3
+E2,Network only,0,0,259197,3
+E2,System only,0,0,259197,3
+E2,Original hybrid,3,14128,245069,0
+E2,Full-day uncalibrated hybrid,3,12829,246368,0
+E2,Improved hybrid,3,7249,251948,0
+E2,Without ML,3,0,259197,0
+E2,Without network,3,7249,251948,0
+E2,Without rules,0,7249,251948,3
+E3,Rules only,3,0,259023,174
+E3,ML original,5,14123,244900,172
+E3,ML calibrated,0,7249,251774,177
+E3,Network only,0,0,259023,177
+E3,System only,0,0,259023,177
+E3,Original hybrid,8,14123,244900,169
+E3,Full-day uncalibrated hybrid,3,12829,246194,174
+E3,Improved hybrid,3,7249,251774,174
+E3,Without ML,3,0,259023,174
+E3,Without network,3,7249,251774,174
+E3,Without rules,0,7249,251774,177
+E4,Rules only,0,0,258840,360
+E4,ML original,5,14123,244717,355
+E4,ML calibrated,0,7249,251591,360
+E4,Network only,360,0,258840,0
+E4,System only,0,0,258840,360
+E4,Original hybrid,360,14123,244717,0
+E4,Full-day uncalibrated hybrid,360,12829,246011,0
+E4,Improved hybrid,360,7249,251591,0
+E4,Without ML,360,0,258840,0
+E4,Without network,0,7249,251591,360
+E4,Without rules,360,7249,251591,0
+E5,Rules only,543,0,258657,0
+E5,ML original,64,14123,244534,479
+E5,ML calibrated,12,7249,251408,531
+E5,Network only,0,0,258657,543
+E5,System only,0,0,258657,543
+E5,Original hybrid,543,14123,244534,0
+E5,Full-day uncalibrated hybrid,543,12829,245828,0
+E5,Improved hybrid,543,7249,251408,0
+E5,Without ML,543,0,258657,0
+E5,Without network,543,7249,251408,0
+E5,Without rules,12,7249,251408,531
+E6,Rules only,543,0,258657,0
+E6,ML original,64,14123,244534,479
+E6,ML calibrated,12,7249,251408,531
+E6,Network only,360,0,258657,183
+E6,System only,0,0,258657,543
+E6,Original hybrid,543,14123,244534,0
+E6,Full-day uncalibrated hybrid,543,12829,245828,0
+E6,Improved hybrid,543,7249,251408,0
+E6,Without ML,543,0,258657,0
+E6,Without network,543,7249,251408,0
+E6,Without rules,360,7249,251408,183
+E7,Rules only,189,0,258849,162
+E7,ML original,138,14141,244708,213
+E7,ML calibrated,160,7254,251595,191
+E7,Network only,348,0,258849,3
+E7,System only,6,0,258849,345
+E7,Original hybrid,351,14141,244708,0
+E7,Full-day uncalibrated hybrid,351,12853,245996,0
+E7,Improved hybrid,351,7254,251595,0
+E7,Without ML,351,0,258849,0
+E7,Without network,189,7254,251595,162
+E7,Without rules,348,7254,251595,3
+benign_command_burst,Rules only,0,3,259197,0
+benign_command_burst,ML original,0,14128,245072,0
+benign_command_burst,ML calibrated,0,7249,251951,0
+benign_command_burst,Network only,0,0,259200,0
+benign_command_burst,System only,0,0,259200,0
+benign_command_burst,Original hybrid,0,14131,245069,0
+benign_command_burst,Full-day uncalibrated hybrid,0,12832,246368,0
+benign_command_burst,Improved hybrid,0,7252,251948,0
+benign_command_burst,Without ML,0,3,259197,0
+benign_command_burst,Without network,0,7252,251948,0
+benign_command_burst,Without rules,0,7249,251951,0
+benign_authorized_peer,Rules only,0,0,259200,0
+benign_authorized_peer,ML original,0,14128,245072,0
+benign_authorized_peer,ML calibrated,0,7249,251951,0
+benign_authorized_peer,Network only,0,270,258930,0
+benign_authorized_peer,System only,0,0,259200,0
+benign_authorized_peer,Original hybrid,0,14398,244802,0
+benign_authorized_peer,Full-day uncalibrated hybrid,0,13099,246101,0
+benign_authorized_peer,Improved hybrid,0,7519,251681,0
+benign_authorized_peer,Without ML,0,270,258930,0
+benign_authorized_peer,Without network,0,7249,251951,0
+benign_authorized_peer,Without rules,0,7519,251681,0
+benign_load,Rules only,0,0,259200,0
+benign_load,ML original,0,14128,245072,0
+benign_load,ML calibrated,0,7249,251951,0
+benign_load,Network only,0,0,259200,0
+benign_load,System only,0,0,259200,0
+benign_load,Original hybrid,0,14128,245072,0
+benign_load,Full-day uncalibrated hybrid,0,12829,246371,0
+benign_load,Improved hybrid,0,7249,251951,0
+benign_load,Without ML,0,0,259200,0
+benign_load,Without network,0,7249,251951,0
+benign_load,Without rules,0,7249,251951,0
+benign_telemetry,Rules only,0,0,259200,0
+benign_telemetry,ML original,0,25762,233438,0
+benign_telemetry,ML calibrated,0,24159,235041,0
+benign_telemetry,Network only,0,0,259200,0
+benign_telemetry,System only,0,0,259200,0
+benign_telemetry,Original hybrid,0,25762,233438,0
+benign_telemetry,Full-day uncalibrated hybrid,0,28003,231197,0
+benign_telemetry,Improved hybrid,0,24159,235041,0
+benign_telemetry,Without ML,0,0,259200,0
+benign_telemetry,Without network,0,24159,235041,0
+benign_telemetry,Without rules,0,24159,235041,0
+attack_primary_unauthorized,Rules only,3,0,259197,0
+attack_primary_unauthorized,ML original,0,14128,245069,3
+attack_primary_unauthorized,ML calibrated,0,7249,251948,3
+attack_primary_unauthorized,Network only,0,0,259197,3
+attack_primary_unauthorized,System only,0,0,259197,3
+attack_primary_unauthorized,Original hybrid,0,14128,245069,3
+attack_primary_unauthorized,Full-day uncalibrated hybrid,3,12829,246368,0
+attack_primary_unauthorized,Improved hybrid,3,7249,251948,0
+attack_primary_unauthorized,Without ML,3,0,259197,0
+attack_primary_unauthorized,Without network,3,7249,251948,0
+attack_primary_unauthorized,Without rules,0,7249,251948,3
+attack_boundary_flood,Rules only,0,0,259164,36
+attack_boundary_flood,ML original,0,14128,245036,36
+attack_boundary_flood,ML calibrated,0,7249,251915,36
+attack_boundary_flood,Network only,0,0,259164,36
+attack_boundary_flood,System only,0,0,259164,36
+attack_boundary_flood,Original hybrid,0,14128,245036,36
+attack_boundary_flood,Full-day uncalibrated hybrid,0,12829,246335,36
+attack_boundary_flood,Improved hybrid,0,7249,251915,36
+attack_boundary_flood,Without ML,0,0,259164,36
+attack_boundary_flood,Without network,0,7249,251915,36
+attack_boundary_flood,Without rules,0,7249,251915,36
+attack_low_network,Rules only,0,0,258930,270
+attack_low_network,ML original,0,14128,244802,270
+attack_low_network,ML calibrated,0,7249,251681,270
+attack_low_network,Network only,3,0,258930,267
+attack_low_network,System only,0,0,258930,270
+attack_low_network,Original hybrid,3,14128,244802,267
+attack_low_network,Full-day uncalibrated hybrid,3,12829,246101,267
+attack_low_network,Improved hybrid,3,7249,251681,267
+attack_low_network,Without ML,3,0,258930,267
+attack_low_network,Without network,0,7249,251681,270
+attack_low_network,Without rules,3,7249,251681,267
+attack_short_thermal,Rules only,45,0,259155,0
+attack_short_thermal,ML original,24,14138,245017,21
+attack_short_thermal,ML calibrated,5,7249,251906,40
+attack_short_thermal,Network only,0,0,259155,45
+attack_short_thermal,System only,0,0,259155,45
+attack_short_thermal,Original hybrid,45,14138,245017,0
+attack_short_thermal,Full-day uncalibrated hybrid,45,12831,246324,0
+attack_short_thermal,Improved hybrid,45,7249,251906,0
+attack_short_thermal,Without ML,45,0,259155,0
+attack_short_thermal,Without network,45,7249,251906,0
+attack_short_thermal,Without rules,5,7249,251906,40
+attack_reordered,Rules only,48,0,258885,267
+attack_reordered,ML original,24,14138,244747,291
+attack_reordered,ML calibrated,5,7249,251636,310
+attack_reordered,Network only,270,0,258885,45
+attack_reordered,System only,0,0,258885,315
+attack_reordered,Original hybrid,315,14138,244747,0
+attack_reordered,Full-day uncalibrated hybrid,315,12831,246054,0
+attack_reordered,Improved hybrid,315,7249,251636,0
+attack_reordered,Without ML,315,0,258885,0
+attack_reordered,Without network,48,7249,251636,267
+attack_reordered,Without rules,275,7249,251636,40

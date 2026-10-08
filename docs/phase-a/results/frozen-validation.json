@@ -1,0 +1,135 @@
+{
+  "manifest": {
+    "protocol": {
+      "protocol_version": 2,
+      "hours": 24,
+      "training_seed": 101,
+      "calibration_seed": 202,
+      "validation_seeds": [
+        203
+      ],
+      "test_seeds": [
+        301,
+        302,
+        303
+      ],
+      "model_seed": 42,
+      "original_train_hours": 6,
+      "original_quantile": 0.95,
+      "calibration_quantile": 0.975,
+      "calibration_candidates": [
+        0.95,
+        0.975,
+        0.99,
+        0.995,
+        0.999
+      ],
+      "scenarios": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "E7"
+      ],
+      "variants": [
+        "benign_command_burst",
+        "benign_authorized_peer",
+        "benign_load",
+        "benign_telemetry",
+        "attack_primary_unauthorized",
+        "attack_boundary_flood",
+        "attack_low_network",
+        "attack_short_thermal",
+        "attack_reordered"
+      ],
+      "variant_start_seconds": 32430,
+      "variant_duration_seconds": 90,
+      "benign_burst_commands": 12,
+      "benign_peer": "10.0.0.99",
+      "benign_load_multiplier": 1.25,
+      "benign_temperature_noise_sd": 0.5,
+      "benign_cpu_noise_sd": 1.0,
+      "attack_network_multiplier": 2.0,
+      "attack_temperature_c": 86.0,
+      "short_thermal_seconds": 15,
+      "correlation_window_seconds": 180,
+      "memory_sample_interval_seconds": 0.02,
+      "acceptance": "Highest full-day-model calibration quantile from the recorded grid preserving each original ML-detected event on validation E1-E7, plus hybrid FP reduction and preserved hybrid event coverage. Sample recall and delay trade-offs are disclosed. Initial .999 candidate rejected after losing ML event coverage. No final-test tuning."
+    },
+    "protocol_hash": "sha256:ba548c5ee90acd274f2559b4b4a68d3e8aaa9dbfa6d2c90a02a6abb5a4650f2b",
+    "source_hash": "sha256:9847ed3bd79458e5337bace10402011a3a551e93d162228a05129b0364a3291d",
+    "training_fingerprint": "sha256:bd8e095b479739b912d2911477fa73f3bc5e4ce59c83f2d40a08c0508cb4fd1f",
+    "calibration_fingerprint": "sha256:a728447d08ae99c0823162de72859e6fef86a3a183b6d0f3e7e74da8a59bca17",
+    "thresholds": {
+      "original": 1.9134474278474645e-17,
+      "full_day_uncalibrated": -1.0377344743947256e-17,
+      "calibrated": 0.011108109484607038
+    },
+    "network_baseline": {
+      "limits": {
+        "packets": 306.0,
+        "bytes": 7310.40600000001,
+        "traffic_rate": 6007.47192280301
+      },
+      "medians": {
+        "packets": 51.0,
+        "bytes": 1231.0,
+        "traffic_rate": 1017.9103745463544
+      },
+      "categories": {
+        "src_ip": [
+          "10.0.0.10",
+          "10.0.0.11",
+          "10.0.0.12",
+          "10.0.0.13",
+          "10.0.0.14",
+          "10.0.0.15",
+          "10.0.0.16",
+          "10.0.0.17",
+          "10.0.0.18",
+          "10.0.0.19",
+          "10.0.0.2",
+          "10.0.0.20",
+          "10.0.0.21",
+          "10.0.0.22",
+          "10.0.0.23",
+          "10.0.0.24",
+          "10.0.0.25",
+          "10.0.0.26",
+          "10.0.0.27",
+          "10.0.0.28",
+          "10.0.0.29",
+          "10.0.0.3",
+          "10.0.0.30",
+          "10.0.0.31",
+          "10.0.0.32",
+          "10.0.0.33",
+          "10.0.0.4",
+          "10.0.0.5",
+          "10.0.0.6",
+          "10.0.0.7",
+          "10.0.0.8",
+          "10.0.0.9"
+        ],
+        "dst_ip": [
+          "10.1.0.5",
+          "10.1.0.6"
+        ],
+        "protocol": [
+          "TCP",
+          "UDP"
+        ]
+      },
+      "spike_limit": 500.0
+    }
+  },
+  "decision": {
+    "accepted": true,
+    "original_fp_seconds": 31850,
+    "candidate_fp_seconds": 16436,
+    "no_standard_event_coverage_loss": true,
+    "no_standard_ml_event_coverage_loss": true
+  }
+}

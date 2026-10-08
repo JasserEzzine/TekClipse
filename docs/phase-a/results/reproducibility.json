@@ -1,0 +1,44 @@
+{
+  "verified": true,
+  "case_runs_per_execution": 48,
+  "checks": {
+    "case_count": true,
+    "identical_manifest": true,
+    "identical_results_digest": true,
+    "source_still_frozen": true,
+    "digest_recomputed": true,
+    "original_tests_unchanged": true
+  },
+  "results_digest": "sha256:163083022d30fe89a84aa736ee741fa7763b9c7745482c949106c97e0f98dd00",
+  "first_output": "results/phase-a/test.json",
+  "repeat_output": "results/phase-a-repeat/test.json",
+  "method": "Two separate processes, regenerated datasets and refitted frozen nominal models; all 48 held-out case-runs repeated. Semantic comparison includes confusion counts, event matches/delays, incident metrics, Trust/subsystems and data fingerprints; excludes measured wall-clock timings.",
+  "repeated_runtime": {
+    "environment": {
+      "python": "3.14.4",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "AMD64",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+      "logical_cpus": 12,
+      "physical_cpus": 6,
+      "installed_ram_mb": 32469.66015625,
+      "packages": {
+        "numpy": "2.4.4",
+        "pandas": "3.0.3",
+        "scikit-learn": "1.8.0",
+        "psutil": "7.2.2",
+        "streamlit": "1.58.0"
+      }
+    },
+    "fit_and_calibration_seconds": 1.4483560000007856,
+    "total_seconds": 585.1009674999987,
+    "memory": {
+      "start_rss_mb": 164.96875,
+      "sampled_peak_rss_mb": 310.79296875,
+      "sampled_increment_mb": 145.82421875,
+      "interval_seconds": 0.02,
+      "note": "Whole process RSS sampled, not an exact allocator peak; includes evaluation work."
+    },
+    "note": "Batch detector processing excludes data generation, model fitting, explanation, correlation and metrics; each is labeled separately. Not stream ingestion latency."
+  }
+}

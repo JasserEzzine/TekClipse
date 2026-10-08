@@ -20,7 +20,7 @@ def require(condition, detail):
 
 
 def main():
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import expect, sync_playwright
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8503")
@@ -74,7 +74,7 @@ def main():
             )
 
         settle()
-        initial = page.locator(".trust-ring strong").inner_text()
+        initial = "".join(page.locator(".trust-ring strong").inner_text().split())
         for width, height in [(1920, 1080), (1366, 768)]:
             capture("e1-nominal", width, height)
         page.set_viewport_size({"width": 1920, "height": 1080})
@@ -124,15 +124,22 @@ def main():
         settle()
         require(page.locator("iframe").count() >= 1, "Original orbit iframe missing")
         page.get_by_role("button", name="Reset demo", exact=True).click()
+        # A hidden status widget can precede the next Streamlit rerender. Wait
+        # for the requested state, then retain every original reset assertion.
+        page.wait_for_function(
+            "value => document.querySelector('.trust-ring strong')?.textContent.replace(/\\s/g, '') === value",
+            arg=initial,
+        )
         settle()
         require(
-            page.locator(".trust-ring strong").inner_text() == initial,
+            "".join(page.locator(".trust-ring strong").inner_text().split()) == initial,
             "Trust did not reset",
         )
         require(page.locator(".attack-node").count() == 0, "Stale attack chain")
         require(page.locator(".impact-preview").count() == 0, "Stale impact")
         require(page.locator(".response-preview").count() == 0, "Stale response")
         page.get_by_role("button", name="Start nominal E1", exact=True).click()
+        expect(page.locator(".mission-console")).to_have_attribute("data-security", "NORMAL", timeout=120000)
         settle()
         require(
             page.locator(".mission-console").get_attribute("data-security") == "NORMAL",

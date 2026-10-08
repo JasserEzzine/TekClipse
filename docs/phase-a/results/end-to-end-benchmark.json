@@ -1,0 +1,91 @@
+{
+  "seed": 303,
+  "scenario": "E7",
+  "hours": 24,
+  "repeats": 3,
+  "dataset_fingerprint": "sha256:f76c3bc09b7a27bcf30c2a903c8e0de17694f2ff07d5ba02432c10bcb6c2d03a",
+  "summaries": {
+    "Original hybrid": {
+      "detection_batch_seconds": {
+        "median": 0.9857867999999144,
+        "minimum": 0.952564799999891,
+        "maximum": 1.0209064000009676
+      },
+      "through_explanation_correlation_seconds": {
+        "median": 8.902139800000441,
+        "minimum": 8.636465800000224,
+        "maximum": 9.102061999999933
+      }
+    },
+    "Improved hybrid": {
+      "detection_batch_seconds": {
+        "median": 0.716368399998828,
+        "minimum": 0.706151399999726,
+        "maximum": 0.7616691000002902
+      },
+      "through_explanation_correlation_seconds": {
+        "median": 4.61553079999976,
+        "minimum": 4.581900600000154,
+        "maximum": 4.926723600001424
+      }
+    }
+  },
+  "measurements": [
+    {
+      "iteration": 1,
+      "method": "Original hybrid",
+      "detection_batch_seconds": 0.9857867999999144,
+      "through_explanation_correlation_seconds": 9.102061999999933,
+      "alerts": 5251,
+      "incidents": 1
+    },
+    {
+      "iteration": 1,
+      "method": "Improved hybrid",
+      "detection_batch_seconds": 0.716368399998828,
+      "through_explanation_correlation_seconds": 4.61553079999976,
+      "alerts": 2843,
+      "incidents": 1
+    },
+    {
+      "iteration": 2,
+      "method": "Original hybrid",
+      "detection_batch_seconds": 0.952564799999891,
+      "through_explanation_correlation_seconds": 8.636465800000224,
+      "alerts": 5251,
+      "incidents": 1
+    },
+    {
+      "iteration": 2,
+      "method": "Improved hybrid",
+      "detection_batch_seconds": 0.7616691000002902,
+      "through_explanation_correlation_seconds": 4.926723600001424,
+      "alerts": 2843,
+      "incidents": 1
+    },
+    {
+      "iteration": 3,
+      "method": "Original hybrid",
+      "detection_batch_seconds": 1.0209064000009676,
+      "through_explanation_correlation_seconds": 8.902139800000441,
+      "alerts": 5251,
+      "incidents": 1
+    },
+    {
+      "iteration": 3,
+      "method": "Improved hybrid",
+      "detection_batch_seconds": 0.706151399999726,
+      "through_explanation_correlation_seconds": 4.581900600000154,
+      "alerts": 2843,
+      "incidents": 1
+    }
+  ],
+  "memory": {
+    "start_rss_mb": 246.07421875,
+    "sampled_peak_rss_mb": 289.62890625,
+    "sampled_increment_mb": 43.5546875,
+    "interval_seconds": 0.02,
+    "note": "Whole process RSS sampled, not an exact allocator peak; includes evaluation work."
+  },
+  "note": "Complete wall-clock batch processing from in-memory input through alerts, then evidence/correlation. Excludes generation, fitting, persistence, evaluation metrics and UI. Both profiles use output-equivalent optimized R3. Not streaming or spacecraft response latency; run on development hardware."
+}

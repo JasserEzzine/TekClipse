@@ -1,5 +1,7 @@
 # Incremental satellite security upgrade
 
+> Historical report from the earlier security upgrade. Phase A adds independent-run evaluation, ablations and measured batch resource usage; see [the Phase A report](phase-a/report.md). The original benchmark below is retained for traceability.
+
 This extends the existing Streamlit dashboard and five-column alert schema. No new runtime dependencies, services or device connections were added. The original eight tabs, charts, data generator, storage backends, R1–R3 and Isolation Forest remain. E1–E6 injection function bodies are unchanged; E4 now also produces network alerts.
 
 ## Added files

@@ -11,6 +11,8 @@ tekclipse/data/generated/manifest.json
 tekclipse/data/generated/nominal_preview.json
 tekclipse/data/generated/
 results/
+!docs/phase-a/results/
+!docs/phase-a/results/**
 .streamlit/secrets.toml
 .env
 .env.*
