@@ -12,6 +12,7 @@ from tekclipse.pipeline.response import recommended_responses
 from tekclipse.pipeline.subsystems import subsystem_statuses
 from tekclipse.dashboard.mission_state import mission_briefing
 from tekclipse.dashboard.mission_visuals import mission_console, impact_reasoning_html
+from tekclipse.dashboard.investigation import subsystem_panel, replay_panel, render_investigation, render_research_notes
 
 
 def render_security_panel(result, prefix="overview", view=None):
@@ -77,7 +78,12 @@ def render_security_panel(result, prefix="overview", view=None):
             trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window, correlation_policy=policy)
             for s in points
         ]
-    st.html(mission_console(snapshot, briefing, history))
+    st.html(mission_console(snapshot, briefing, history, scenario=scenario))
+    if scenario == 'E7':
+        st.html(replay_panel(history))
+    st.html(subsystem_panel(snapshot))
+    render_investigation(snapshot, prefix)
+    render_research_notes()
     with st.expander(
         "Mission impact reasoning / cyber evidence to potential consequence",
         expanded=False,

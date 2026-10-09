@@ -1,0 +1,218 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "5dd1d1f",
+  "safety_branch": "safety/phase-c-baseline-5dd1d1f",
+  "baseline_tests": {
+    "tests": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 177.177
+  },
+  "final_tests": {
+    "tests": 72,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 204.328
+  },
+  "preserved": {
+    "inventoried_files": 107,
+    "changed": [],
+    "scope": "All original tests, pipeline/data/evaluation/storage source, Phase A and A.2 artifacts, data service, config and dependencies."
+  },
+  "browser": {
+    "profiles": [
+      {
+        "profile": "Original preview (default)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.8867047000003367
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 1.6092048000000432
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 1.754200100000162
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.807579899999837
+          },
+          {
+            "second": 120,
+            "trust": "9",
+            "seconds": 1.6603074000004199
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 1.6536004999998113
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 1.5917063999995662
+          }
+        ]
+      },
+      {
+        "profile": "Phase A calibrated (experimental)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.7499689000001126
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 1.3776997999998457
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 1.5664890000002742
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.8645864999998594
+          },
+          {
+            "second": 120,
+            "trust": "9",
+            "seconds": 1.532192500000292
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 1.6207337999999254
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 2.1870334999998704
+          }
+        ]
+      },
+      {
+        "profile": "Phase A.2 hardened (experimental)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.8021865999999136
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 1.6486261000000013
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 1.760900600000241
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.5539244999999937
+          },
+          {
+            "second": 120,
+            "trust": "11",
+            "seconds": 1.7915757999999187
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 1.7697567000000163
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 1.7084491999999045
+          }
+        ]
+      }
+    ],
+    "sizes": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 1366,
+        "height": 768,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "horizontal_overflow": false
+      }
+    ],
+    "exports": [
+      {
+        "rows": 63,
+        "future_evidence": false,
+        "family_filter": true
+      }
+    ],
+    "eight_tabs": [
+      "OVERVIEW",
+      "TELEMETRY",
+      "COMMANDS",
+      "NETWORK",
+      "EVENTS",
+      "ALERTS",
+      "SCENARIOS E1\u2013E7",
+      "ABOUT"
+    ],
+    "errors": [],
+    "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+  },
+  "checks": {
+    "bandit_findings": 0,
+    "credential_scan": {
+      "tool": "detect-secrets",
+      "findings": 0,
+      "scope": "Current Git-tracked files including staged Phase C additions; not a history scan."
+    },
+    "diff_check": "passed",
+    "bandit_scope": "tekclipse, scripts, streamlit_app.py",
+    "bandit_scan_errors": 0
+  },
+  "environment": {
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "resolved_issues": [
+    "Preserved legacy selectbox ordering by using radio buttons for the added family filter; original assertion unchanged.",
+    "Restarted browser server after presentation module edits to avoid cached imports.",
+    "Browser checker uses visible radio labels and explicit checked-state assertions; native Streamlit radio input is visually hidden."
+  ],
+  "limitations": [
+    "Synthetic simulation; no real satellite connection or flight qualification.",
+    "Policy trust and temporal incidents, not probabilities or causal attribution.",
+    "Full-scenario legacy analyst tabs are retrospective; new investigation and mission replay are time-limited.",
+    "Mobile stacks panels and requires scrolling; no comprehensive accessibility certification."
+  ],
+  "pushed": false,
+  "deployed": false,
+  "finalized_date": "2026-10-09"
+}

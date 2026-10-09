@@ -56,6 +56,14 @@ python scripts/benchmark_phase_a2.py --output results/phase-a2-reproduction
 
 The CLI command above evaluates independent display seed 42; published benchmark numbers use separate frozen test seeds. Read the [Phase A.2 report](docs/phase-a2/report.md), [complete before/after measurements](docs/phase-a2/metrics.md), [validation decisions including rejected candidates](docs/phase-a2/validation-decisions.md), and [run/reproduction handover](docs/phase-a2/handover.md). The original Phase A results remain preserved.
 
+## Phase C: mission control and investigation
+
+The mission-control overview now names the active scenario/profile and shows the actual review time, current alerts, correlated incidents and latest relevant evidence. Its trust gauge explains the existing policy deductions. The ground/link/satellite diagram, five named subsystem cards, E7 stage history and analyst workspace all use existing observations; they do not fabricate detections or change the trust formula.
+
+Use **Launch E7 attack**, advance through the seven replay checkpoints, open **Security analyst / investigate observed evidence**, and use **Reset demo** to return to E1. The analyst CSV exports only matching evidence already observed at the current review time. All eight tabs, three profiles, scientific tools and existing storage remain available.
+
+Read the [Phase C report and real screenshots](docs/phase-c/report.md), [jury demonstration guide](docs/phase-c/handover.md), and [verification record](docs/phase-c/verification.json). This remains a simulated research demonstrator, with no real satellite connection or flight qualification.
+
 ## Challenge and space context
 
 A satellite's operational behavior depends on commands, communication, onboard processing, power and thermal conditions. An unusual reading alone does not explain whether an operator should trust the whole system. TekClipse brings those observations together and translates supported security evidence into clearly labeled **potential** mission consequences. The project has passed its research-paper selection stage; this repository presents the reproducible prototype for the next phase.

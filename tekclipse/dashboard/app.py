@@ -58,12 +58,13 @@ def local_font_css():
 st.html("<style>" + local_font_css() + "</style>")
 st.html(Path(__file__).with_name("theme.css"))
 st.html(Path(__file__).with_name("mission.css"))
+st.html(Path(__file__).with_name("operations.css"))
 st.html(
-    '<div class="disclaimer">SIMULATION ONLY · Alerts indicate deviation from nominal profile, not confirmed attacks.</div>'
+    '<div class="disclaimer">SIMULATED MISSION — RESEARCH DEMONSTRATOR · No real satellite connection</div>'
 )
 st.html(
-    """<div class="mission-header"><div><div class="mission-title">◉ TEKCLIPSE</div><div class="eyebrow">SATELLITE SECURITY OPERATIONS</div></div>
-<div class="header-meta"><span>TEK-UP / IASTAM 6.0 / TRACK 05 · P9</span><span class="chip">STORED SIMULATION · SEED 42</span><span>Multi-source operations observatory</span></div></div>"""
+    """<div class="mission-header"><div><h1 class="mission-title">TEKCLIPSE <span>| SATELLITE SECURITY MISSION CONTROL</span></h1><p class="mission-subtitle">Can the Satellite Still Be Trusted?</p></div>
+<div class="header-meta"><span class="chip">SAT-01 / SIMULATED</span><span>TEK-UP · IASTAM 6.0<br>Telemetry / commands / network / system events</span></div></div>"""
 )
 
 with st.sidebar:
@@ -119,7 +120,9 @@ run_key = (hours, token, profile)
 if st.session_state.get("run_key") != run_key:
     st.session_state["run_key"] = run_key
     for state_key in ('validated_evaluation', 'evaluation_key', 'pending_evaluation',
-                      'pending_scenario', 'overview_replay_second', 'scenarios_replay_second'):
+                      'pending_scenario', 'overview_replay_second', 'scenarios_replay_second',
+                      'overview_investigation_family', 'overview_investigation_alert',
+                      'scenarios_investigation_family', 'scenarios_investigation_alert'):
         st.session_state.pop(state_key, None)
     st.session_state['guided_demo'] = False
     st.session_state["result"] = load_nominal_preview(hours, token) if profile == 'original' else detect(hours, token, 'E1', profile)
@@ -202,6 +205,8 @@ def run(scenario_name):
     st.session_state["guided_demo"] = False
     for prefix in ("overview", "scenarios"):
         st.session_state.pop(prefix + "_replay_second", None)
+        st.session_state.pop(prefix + '_investigation_family', None)
+        st.session_state.pop(prefix + '_investigation_alert', None)
 
 
 def demo_run(scenario_name):
@@ -245,7 +250,7 @@ names = [
     "SCENARIOS E1–E7",
     "ABOUT",
 ]
-st.caption(f'Detection profile: {PROFILE_LABELS[profile]} · Published scientific results use independent test seeds; this preview uses seed 42.')
+st.html(f'<div class="profile-ribbon"><span><i></i>ACTIVE SCENARIO <b>{scenario}</b></span><span>DETECTION PROFILE <b>{html.escape(PROFILE_LABELS[profile])}</b></span><span>STORED SIMULATION · SEED 42</span></div>')
 tabs = st.tabs(names, key="mission_tabs", on_change="rerun")
 # Stateful tabs render only their active content; heavy charts do not run offscreen.
 if tabs[0].open:

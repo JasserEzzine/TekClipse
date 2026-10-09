@@ -50,7 +50,8 @@ def svg_image(svg, css_class, description):
 
 def satellite_svg(briefing):
     states = {r["subsystem"]: r["status"] for r in briefing["states"]}
-    link = COLORS[briefing["link_status"]]
+    link_state = briefing["link_status"] if briefing["network_active"] or briefing["link_status"] != 'NORMAL' else 'UNKNOWN'
+    link = COLORS[link_state]
     thermal = COLORS[states["Thermal"]]
     obc = COLORS[states["On-board computer"]]
     command = COLORS[states["Command channel"]]
@@ -66,15 +67,16 @@ def satellite_svg(briefing):
     <rect width="820" height="300" fill="url(#mc-grid)"/>
     <ellipse cx="440" cy="164" rx="322" ry="94" transform="rotate(-13 440 164)" fill="none" stroke="#304958" stroke-dasharray="4 7"/>
     <text x="27" y="30" class="svg-overline">GROUND SEGMENT</text><text x="514" y="30" class="svg-overline">SPACE SEGMENT / SAT-01</text>
+    <text x="147" y="88" text-anchor="middle" fill="{command}" class="svg-label">COMMAND SECURITY · {label(NAMES.get(states['Command channel'],states['Command channel']))}</text>
     <circle cx="147" cy="190" r="85" fill="none" stroke="#2d6683" opacity=".5"/>
     <circle cx="147" cy="190" r="79" fill="url(#mc-earth)" stroke="#48768c"/>
     <g clip-path="url(#mc-globe)" stroke="#4d8091" stroke-width=".8" fill="none" opacity=".6"><ellipse cx="147" cy="190" rx="38" ry="79"/><ellipse cx="147" cy="190" rx="64" ry="79"/><ellipse cx="147" cy="190" rx="79" ry="32"/><path d="M68 190H226 M147 110V270"/>
     <path d="M94 140l22-12 16 9 9 27-15 12-7 25-20-6-8-19-19-8 M156 154l27-12 35 22-5 21-24 10-6 26-20 6-9-31-13-13z" fill="#386775" stroke="none"/></g>
     <path class="security-link" d="M214 172Q360 52 525 142" fill="none" stroke="{link}" stroke-width="2" stroke-dasharray="5 7"/>
     <circle cx="215" cy="173" r="6" fill="{link}"/><circle cx="521" cy="140" r="4" fill="{link}"/>
-    <g stroke="#c1d7e1" stroke-width="2" fill="none"><path d="M193 149q18 26 39 4z M211 163l-9 17 M221 165l6 14 M196 180h35 M215 157l14-17"/><circle cx="230" cy="139" r="2"/></g>
+    <g stroke="{command}" stroke-width="2" fill="none"><path d="M193 149q18 26 39 4z M211 163l-9 17 M221 165l6 14 M196 180h35 M215 157l14-17"/><circle cx="230" cy="139" r="2"/></g>
     <rect x="282" y="64" width="164" height="28" rx="5" fill="#0a1b2b" stroke="{link}" stroke-opacity=".6"/>
-    <text x="364" y="82" text-anchor="middle" fill="{link}" class="svg-label">LINK SECURITY · {label(NAMES.get(briefing['link_status'],briefing['link_status']))}</text>
+    <text x="364" y="82" text-anchor="middle" fill="{link}" class="svg-label">LINK SECURITY · {label(NAMES.get(link_state,link_state))}</text>
     <g transform="rotate(-9 554 155)">
     <path d="M358 107H493V203H358Z M591 107H726V203H591Z" fill="#132c48" stroke="#6484a2"/>
     <g stroke="#587692" stroke-width="1" opacity=".8">{panel_lines}<path d="M358 136h135 M358 160h135 M358 183h135 M591 136h135 M591 160h135 M591 183h135"/></g>
@@ -98,7 +100,7 @@ def satellite_svg(briefing):
     )
 
 
-def mission_console(snapshot, briefing, history=()):
+def mission_console(snapshot, briefing, history=(), *, scenario='E1'):
     status = snapshot["status"]
     color = COLORS[status]
     at = pd.Timestamp(snapshot["at"])
@@ -145,7 +147,7 @@ def mission_console(snapshot, briefing, history=()):
         else ""
     )
     subsystems = "".join(
-        f'<div class="subsystem-tile"><span>{label(SHORT[r["subsystem"]])}</span>{badge(r["status"])}<small>{r["evidence_count"]} active evidence records</small></div>'
+        f'<div class="subsystem-tile"><span>{label(r["subsystem"])}</span>{badge(r["status"])}<small>{r["evidence_count"]} active evidence records</small></div>'
         for r in briefing["states"]
     )
     chain = "".join(
@@ -186,12 +188,18 @@ def mission_console(snapshot, briefing, history=()):
         response_body += (
             f"<small>All {len(responses)} recommendations are available below.</small>"
         )
+    actionable = [a for a in snapshot['active_alerts'] if a['source'] != 'ML']
+    latest = max(actionable or snapshot['active_alerts'], key=lambda a:pd.Timestamp(a['observed_at']), default=None)
+    recent = f"{latest['source']} · {pd.Timestamp(latest['observed_at']):%H:%M:%S} UTC" if latest else 'No observed detections'
+    recent_description = latest['description'] if latest else 'No active evidence from the implemented checks in this review window.'
+    sample_note = f'Exact stored sample at {at:%H:%M:%S} UTC' if sample is not None else 'No recent telemetry sample at this review time'
     return f"""<section class="mission-console" style="--state:{color}" data-security="{status}" aria-label="Satellite cybersecurity mission control">
-    <div class="mission-status-bar"><div><span class="mission-kicker">MISSION WATCH / SAT-01</span><strong>Satellite security {badge(status)}</strong></div><div class="mission-data-flags"><span>{data_status}</span><span>{tel_status}</span><span>MISSION {timecode}</span><time>{at:%H:%M:%S} UTC</time></div></div>
-    <div class="mission-hero-grid"><div class="spacecraft-card"><div class="panel-heading"><span>GROUND-TO-SPACE SECURITY</span><span>Scheduled contact: {label(briefing['scheduled_contact'])}</span></div>{satellite_svg(briefing)}<div class="sample-strip">{samples}<small>Exact stored sample at {at:%H:%M:%S} UTC</small></div></div>
-    <div class="operational-trust"><div class="mission-kicker">CAN THE SATELLITE STILL BE TRUSTED?</div><h3>Operational trust</h3><div class="trust-score-row"><div class="trust-ring" style="--progress:{snapshot['score']}%"><strong>{snapshot['score']}<small>/100</small></strong></div><div class="trust-status">{badge(status)}{spark}<span>Calculated from observed evidence</span></div></div><div class="why-heading">WHY THIS TRUST SCORE?</div><div class="trust-reasons">{reasons}</div><div class="trust-disclaimer">Prototype Operational Trust Indicator<br><b>Not a probability of compromise.</b></div></div></div>
+    <div class="mission-status-bar"><div><span class="mission-kicker">MISSION WATCH / SAT-01 · {label(scenario)}</span><strong>Satellite security {badge(status)}</strong></div><div class="mission-data-flags"><span>{data_status}</span><span>{tel_status}</span><time>{at:%H:%M:%S} UTC</time></div></div>
+    <div class="observation-strip"><div><span>ACTIVE ALERTS</span><b>{len(snapshot['active_alerts'])}</b><small>Trailing {snapshot['window_seconds']} seconds</small></div><div><span>CORRELATED INCIDENTS</span><b>{len(snapshot['incidents'])}</b><small>Temporal associations</small></div><div class="latest-observation"><span>{'LATEST ACTIONABLE EVIDENCE' if actionable else 'LATEST OBSERVED EVIDENCE'}</span><b>{label(recent)}</b><small title="{label(recent_description)}">{label(recent_description)}</small></div></div>
+    <div class="mission-hero-grid"><div class="spacecraft-card"><div class="panel-heading"><span>GROUND-TO-SPACE SECURITY</span><span>Scheduled contact: {label(briefing['scheduled_contact'])}</span></div>{satellite_svg(briefing)}<div class="sample-strip">{samples}<small>{sample_note}</small></div></div>
+    <div class="operational-trust"><div class="mission-kicker">OPERATIONAL TRUST INDICATOR</div><div class="trust-score-row"><div class="trust-ring" role="meter" aria-label="Operational Trust Indicator" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{snapshot['score']}" style="--progress:{snapshot['score']}%"><strong>{snapshot['score']}<small>/100</small></strong></div><div class="trust-status">{badge(status)}{spark}<span>Policy status: {label(status)}<br>Observed review checkpoints</span></div></div><div class="why-heading">100 − ACTIVE POLICY DEDUCTIONS</div><div class="trust-reasons">{reasons}</div><div class="trust-disclaimer">Policy-based security indicator.<br><b>Not a probability of compromise.</b></div></div></div>
     <div class="subsystem-strip">{subsystems}</div>
-    <div class="mission-chain"><div class="panel-heading"><span>OBSERVED ATTACK PROGRESSION</span><span>{len(snapshot['active_alerts'])} active alerts · {len(snapshot['incidents'])} incidents</span></div><div class="attack-chain">{chain}</div></div>
+    <div class="mission-chain"><div class="panel-heading"><span>OBSERVED DETECTOR EVIDENCE</span><span>{len(snapshot['active_alerts'])} active alerts · {len(snapshot['incidents'])} incidents</span></div><div class="attack-chain">{chain}</div></div>
     <div class="mission-decisions"><article class="decision-card incident-card"><div class="mission-kicker">01 / ACTIVE INCIDENT</div>{incident_body}<small>Correlation ≠ causation. Anomaly ≠ confirmed attack.</small></article><article class="decision-card"><div class="mission-kicker">02 / POTENTIAL MISSION IMPACT</div>{impact_body}<small>Simulated reasoning; not physical failure prediction.</small></article><article class="decision-card"><div class="mission-kicker">03 / OPERATOR DECISION SUPPORT</div>{response_body}<small>SIMULATED · NO REAL SATELLITE ACTIONS EXECUTED</small></article></div>
     <div class="mission-footer">SYNTHETIC MISSION · {at:%d %b %Y} · trailing {snapshot['window_seconds']}s evidence window · illustrative spacecraft, not flight dynamics</div></section>"""
 
