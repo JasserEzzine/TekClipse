@@ -1,0 +1,44 @@
+[
+  {
+    "action_id": "ACT-3570cea9-09ca-47ee-8d8c-6bf4bce0208e",
+    "exercise_id": "EXERCISE-3404d64e-6d34-43b7-ba15-9d7d364dc07d",
+    "run_id": "RUN-3f65fdb1467967b831eab724",
+    "actor": "Simulated operator",
+    "timestamp": "2026-01-01T12:00:00+00:00",
+    "recorded_at": "2026-10-09T21:35:46.360389+00:00",
+    "target": "command-channel",
+    "policy": "reject_unauthorized",
+    "reason": "Jury demo: reject unauthorized command",
+    "event_id": "EV-b4f4549b79ee790590a4b16b",
+    "operation": "apply",
+    "reverses": null,
+    "expires_at": "2026-01-01T12:05:00+00:00",
+    "result": "Simulation policy enabled for 300 simulated seconds",
+    "probe_before": {
+      "record_id": "RUN-3f65fdb1467967b831eab724:commands:1",
+      "timestamp": "2026-01-01T12:00:00.000001+00:00",
+      "stream": "commands",
+      "source": "UNKNOWN_1",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+      "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+      "original_timestamp": "2026-01-01T12:00:00+00:00"
+    },
+    "probe_after": {
+      "record_id": "RUN-3f65fdb1467967b831eab724:commands:1",
+      "timestamp": "2026-01-01T12:00:00.000001+00:00",
+      "stream": "commands",
+      "source": "UNKNOWN_1",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-3570cea9-09ca-47ee-8d8c-6bf4bce0208e"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+      "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+      "original_timestamp": "2026-01-01T12:00:00+00:00"
+    }
+  }
+]

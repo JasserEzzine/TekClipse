@@ -1,0 +1,913 @@
+{
+  "schema_version": 1,
+  "report_type": "Finding investigation",
+  "incident_id": null,
+  "incident": null,
+  "run_id": "RUN-601b670c3e4727e4d5ef52e7",
+  "exercise_id": "EXERCISE-277260cd-5edc-4571-99e7-283ec1e9b2df",
+  "simulated_review_utc": "2026-01-01T12:00:58+00:00",
+  "scenario": "E3",
+  "profile": "phase_a2",
+  "timeline": [
+    {
+      "event_id": "EV-1b61567e56ca1e27347f9ae4",
+      "run_id": "RUN-601b670c3e4727e4d5ef52e7",
+      "alert_id": "A-000000",
+      "timestamp": "2026-01-01T12:00:18+00:00",
+      "scenario": "E3",
+      "profile": "phase_a2",
+      "detector": "R2",
+      "category": "Command rate",
+      "severity": "CRITICAL",
+      "severity_policy": "Preserve detector severity: R1/R2/SYS CRITICAL; R3/ML WARNING; NET WARNING or HIGH according to its reason count. Not attack certainty.",
+      "source_ids": [
+        "GS_PRIMARY"
+      ],
+      "target_ids": [],
+      "asset_context": "SAT-01 / single-spacecraft simulation",
+      "subsystems": [
+        "Command channel"
+      ],
+      "evidence": "R2 threshold >10 crossed; 11 command records observed in the trailing (t-60s, t] window.",
+      "record_ids": [
+        "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:1",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:2",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:3",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:4",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:5",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:6",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:7",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:8",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:9",
+        "RUN-601b670c3e4727e4d5ef52e7:commands:10"
+      ],
+      "provenance": "Aggregate rate evidence; every listed command contributed, but no individual station is proven malicious.",
+      "status": "Reviewed with simulated response; original finding retained",
+      "operator_response": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "incident_ids": []
+    }
+  ],
+  "source_records": [
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:00+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:00+00:00",
+        "type": "CAMERA_OFF",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:1",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:00+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:00+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:2",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:02+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:02+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:3",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:04+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:04+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:4",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:06+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:06+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:5",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:08+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:08+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:6",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:10+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:10+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:7",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:12+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:12+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:8",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:14+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:14+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:9",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:16+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:16+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:10",
+      "stream": "commands",
+      "timestamp": "2026-01-01T12:00:18+00:00",
+      "observation": {
+        "timestamp": "2026-01-01T12:00:18+00:00",
+        "type": "UPLOAD",
+        "source": "GS_PRIMARY",
+        "authorized": true
+      }
+    }
+  ],
+  "detectors": [
+    "R2"
+  ],
+  "subsystems": [
+    "Command channel"
+  ],
+  "trust": {
+    "score": 88,
+    "status": "NORMAL",
+    "deductions": [
+      {
+        "contributor": "Command burst",
+        "penalty": 12,
+        "alerts": 1,
+        "source": "R2"
+      }
+    ],
+    "scope": "Full current review window, not a per-incident score; original observations, unchanged by counterfactual responses."
+  },
+  "sparta": [
+    {
+      "technique_id": "EX-0013.01",
+      "name": "Flooding: Valid Commands",
+      "scenario": "E3",
+      "evidence_id": "EV-1b61567e56ca1e27347f9ae4",
+      "qualification": "Behavior-level analogy, moderate confidence. Rate violation with authorized simulated commands; resource exhaustion and malicious intent are not established.",
+      "reason": "Observed command count exceeds the implemented R2 rate policy.",
+      "reference": "https://sparta.aerospace.org/technique/EX-0013/01/",
+      "verified": "2026-10-09"
+    }
+  ],
+  "response_actions": [
+    {
+      "action_id": "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f",
+      "exercise_id": "EXERCISE-277260cd-5edc-4571-99e7-283ec1e9b2df",
+      "run_id": "RUN-601b670c3e4727e4d5ef52e7",
+      "actor": "Simulated operator",
+      "timestamp": "2026-01-01T12:00:20+00:00",
+      "recorded_at": "2026-10-09T21:35:58.572029+00:00",
+      "target": "GS_PRIMARY",
+      "policy": "quarantine_station",
+      "reason": "Jury demo: contain command-rate violation",
+      "event_id": "EV-1b61567e56ca1e27347f9ae4",
+      "operation": "apply",
+      "reverses": null,
+      "expires_at": "2026-01-01T12:05:20+00:00",
+      "result": "Simulation policy enabled for 300 simulated seconds",
+      "probe_before": {
+        "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+        "timestamp": "2026-01-01T12:00:20.000001+00:00",
+        "stream": "commands",
+        "source": "GS_PRIMARY",
+        "baseline": "ALLOW",
+        "outcome": "ALLOW",
+        "matched_actions": [],
+        "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+        "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+        "original_timestamp": "2026-01-01T12:00:00+00:00"
+      },
+      "probe_after": {
+        "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+        "timestamp": "2026-01-01T12:00:20.000001+00:00",
+        "stream": "commands",
+        "source": "GS_PRIMARY",
+        "baseline": "ALLOW",
+        "outcome": "DENY",
+        "matched_actions": [
+          "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+        ],
+        "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+        "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+        "original_timestamp": "2026-01-01T12:00:00+00:00"
+      }
+    }
+  ],
+  "exercise_policy_context": [
+    {
+      "action_id": "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f",
+      "exercise_id": "EXERCISE-277260cd-5edc-4571-99e7-283ec1e9b2df",
+      "run_id": "RUN-601b670c3e4727e4d5ef52e7",
+      "actor": "Simulated operator",
+      "timestamp": "2026-01-01T12:00:20+00:00",
+      "recorded_at": "2026-10-09T21:35:58.572029+00:00",
+      "target": "GS_PRIMARY",
+      "policy": "quarantine_station",
+      "reason": "Jury demo: contain command-rate violation",
+      "event_id": "EV-1b61567e56ca1e27347f9ae4",
+      "operation": "apply",
+      "reverses": null,
+      "expires_at": "2026-01-01T12:05:20+00:00",
+      "result": "Simulation policy enabled for 300 simulated seconds",
+      "probe_before": {
+        "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+        "timestamp": "2026-01-01T12:00:20.000001+00:00",
+        "stream": "commands",
+        "source": "GS_PRIMARY",
+        "baseline": "ALLOW",
+        "outcome": "ALLOW",
+        "matched_actions": [],
+        "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+        "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+        "original_timestamp": "2026-01-01T12:00:00+00:00"
+      },
+      "probe_after": {
+        "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:0",
+        "timestamp": "2026-01-01T12:00:20.000001+00:00",
+        "stream": "commands",
+        "source": "GS_PRIMARY",
+        "baseline": "ALLOW",
+        "outcome": "DENY",
+        "matched_actions": [
+          "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+        ],
+        "meaning": "Counterfactual simulation admission only; original observation unchanged.",
+        "mode": "Explicit synthetic resubmission of an observed payload; not a new detection or future observation.",
+        "original_timestamp": "2026-01-01T12:00:00+00:00"
+      }
+    }
+  ],
+  "post_response_evaluation": [
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:261",
+      "timestamp": "2026-01-01T12:00:21+00:00",
+      "stream": "network",
+      "source": "10.0.0.23",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:12",
+      "timestamp": "2026-01-01T12:00:22+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:262",
+      "timestamp": "2026-01-01T12:00:22+00:00",
+      "stream": "network",
+      "source": "10.0.0.24",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:263",
+      "timestamp": "2026-01-01T12:00:23+00:00",
+      "stream": "network",
+      "source": "10.0.0.25",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:13",
+      "timestamp": "2026-01-01T12:00:24+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:264",
+      "timestamp": "2026-01-01T12:00:24+00:00",
+      "stream": "network",
+      "source": "10.0.0.26",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:265",
+      "timestamp": "2026-01-01T12:00:25+00:00",
+      "stream": "network",
+      "source": "10.0.0.27",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:14",
+      "timestamp": "2026-01-01T12:00:26+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:266",
+      "timestamp": "2026-01-01T12:00:26+00:00",
+      "stream": "network",
+      "source": "10.0.0.28",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:267",
+      "timestamp": "2026-01-01T12:00:27+00:00",
+      "stream": "network",
+      "source": "10.0.0.29",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:15",
+      "timestamp": "2026-01-01T12:00:28+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:268",
+      "timestamp": "2026-01-01T12:00:28+00:00",
+      "stream": "network",
+      "source": "10.0.0.30",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:269",
+      "timestamp": "2026-01-01T12:00:29+00:00",
+      "stream": "network",
+      "source": "10.0.0.31",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:16",
+      "timestamp": "2026-01-01T12:00:30+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:270",
+      "timestamp": "2026-01-01T12:00:30+00:00",
+      "stream": "network",
+      "source": "10.0.0.32",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:271",
+      "timestamp": "2026-01-01T12:00:31+00:00",
+      "stream": "network",
+      "source": "10.0.0.33",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:17",
+      "timestamp": "2026-01-01T12:00:32+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:272",
+      "timestamp": "2026-01-01T12:00:32+00:00",
+      "stream": "network",
+      "source": "10.0.0.2",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:273",
+      "timestamp": "2026-01-01T12:00:33+00:00",
+      "stream": "network",
+      "source": "10.0.0.3",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:18",
+      "timestamp": "2026-01-01T12:00:34+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:274",
+      "timestamp": "2026-01-01T12:00:34+00:00",
+      "stream": "network",
+      "source": "10.0.0.4",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:275",
+      "timestamp": "2026-01-01T12:00:35+00:00",
+      "stream": "network",
+      "source": "10.0.0.5",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:19",
+      "timestamp": "2026-01-01T12:00:36+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:276",
+      "timestamp": "2026-01-01T12:00:36+00:00",
+      "stream": "network",
+      "source": "10.0.0.6",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:277",
+      "timestamp": "2026-01-01T12:00:37+00:00",
+      "stream": "network",
+      "source": "10.0.0.7",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:20",
+      "timestamp": "2026-01-01T12:00:38+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:278",
+      "timestamp": "2026-01-01T12:00:38+00:00",
+      "stream": "network",
+      "source": "10.0.0.8",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:279",
+      "timestamp": "2026-01-01T12:00:39+00:00",
+      "stream": "network",
+      "source": "10.0.0.9",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:21",
+      "timestamp": "2026-01-01T12:00:40+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:280",
+      "timestamp": "2026-01-01T12:00:40+00:00",
+      "stream": "network",
+      "source": "10.0.0.10",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:281",
+      "timestamp": "2026-01-01T12:00:41+00:00",
+      "stream": "network",
+      "source": "10.0.0.11",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:22",
+      "timestamp": "2026-01-01T12:00:42+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:282",
+      "timestamp": "2026-01-01T12:00:42+00:00",
+      "stream": "network",
+      "source": "10.0.0.12",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:283",
+      "timestamp": "2026-01-01T12:00:43+00:00",
+      "stream": "network",
+      "source": "10.0.0.13",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:23",
+      "timestamp": "2026-01-01T12:00:44+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:284",
+      "timestamp": "2026-01-01T12:00:44+00:00",
+      "stream": "network",
+      "source": "10.0.0.14",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:285",
+      "timestamp": "2026-01-01T12:00:45+00:00",
+      "stream": "network",
+      "source": "10.0.0.15",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:24",
+      "timestamp": "2026-01-01T12:00:46+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:286",
+      "timestamp": "2026-01-01T12:00:46+00:00",
+      "stream": "network",
+      "source": "10.0.0.16",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:287",
+      "timestamp": "2026-01-01T12:00:47+00:00",
+      "stream": "network",
+      "source": "10.0.0.17",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:25",
+      "timestamp": "2026-01-01T12:00:48+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:288",
+      "timestamp": "2026-01-01T12:00:48+00:00",
+      "stream": "network",
+      "source": "10.0.0.18",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:289",
+      "timestamp": "2026-01-01T12:00:49+00:00",
+      "stream": "network",
+      "source": "10.0.0.19",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:26",
+      "timestamp": "2026-01-01T12:00:50+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:290",
+      "timestamp": "2026-01-01T12:00:50+00:00",
+      "stream": "network",
+      "source": "10.0.0.20",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:291",
+      "timestamp": "2026-01-01T12:00:51+00:00",
+      "stream": "network",
+      "source": "10.0.0.21",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:27",
+      "timestamp": "2026-01-01T12:00:52+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:292",
+      "timestamp": "2026-01-01T12:00:52+00:00",
+      "stream": "network",
+      "source": "10.0.0.22",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:293",
+      "timestamp": "2026-01-01T12:00:53+00:00",
+      "stream": "network",
+      "source": "10.0.0.23",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:28",
+      "timestamp": "2026-01-01T12:00:54+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:294",
+      "timestamp": "2026-01-01T12:00:54+00:00",
+      "stream": "network",
+      "source": "10.0.0.24",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:295",
+      "timestamp": "2026-01-01T12:00:55+00:00",
+      "stream": "network",
+      "source": "10.0.0.25",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:29",
+      "timestamp": "2026-01-01T12:00:56+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:296",
+      "timestamp": "2026-01-01T12:00:56+00:00",
+      "stream": "network",
+      "source": "10.0.0.26",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:297",
+      "timestamp": "2026-01-01T12:00:57+00:00",
+      "stream": "network",
+      "source": "10.0.0.27",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:commands:30",
+      "timestamp": "2026-01-01T12:00:58+00:00",
+      "stream": "commands",
+      "source": "GS_PRIMARY",
+      "baseline": "ALLOW",
+      "outcome": "DENY",
+      "matched_actions": [
+        "ACT-a004c9b1-bd71-47dc-93e0-f36323557c8f"
+      ],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    },
+    {
+      "record_id": "RUN-601b670c3e4727e4d5ef52e7:network:298",
+      "timestamp": "2026-01-01T12:00:58+00:00",
+      "stream": "network",
+      "source": "10.0.0.28",
+      "baseline": "ALLOW",
+      "outcome": "ALLOW",
+      "matched_actions": [],
+      "meaning": "Counterfactual simulation admission only; original observation unchanged."
+    }
+  ],
+  "uncertainties": [
+    "Synthetic simulation; no real attacker identity, firewall or spacecraft control.",
+    "Temporal association is not causality. Sources may be spoofed; no authenticated cross-stream session identifiers.",
+    "Network findings aggregate a second of traffic, not an attribution to each listed peer.",
+    "ML and telemetry anomalies do not prove cyberattack. Unmapped findings lack supported SPARTA technique evidence.",
+    "Admission outcomes and resubmission probes are counterfactual, not reconstructed physical effects.",
+    "Incident IDs are local to a run and review time. Evidence journal covers the documented mission review interval."
+  ]
+}

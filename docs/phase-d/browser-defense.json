@@ -1,0 +1,45 @@
+{
+  "demos": [
+    {
+      "scenario": "E2",
+      "rejection": true,
+      "reversal": true
+    },
+    {
+      "scenario": "E3",
+      "later_commands_denied": 19,
+      "reversal": true
+    },
+    {
+      "scenario": "E7",
+      "stages": 7,
+      "later_flows_denied": 115,
+      "report": true,
+      "trust": 9,
+      "no_future_evidence": true
+    }
+  ],
+  "screens": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "horizontal_overflow": false
+    }
+  ],
+  "errors": []
+}

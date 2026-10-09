@@ -1,6 +1,7 @@
 """Additive security briefing and judge-friendly replay for the existing dashboard."""
 
 import json
+import html
 
 import pandas as pd
 import streamlit as st
@@ -13,6 +14,9 @@ from tekclipse.pipeline.subsystems import subsystem_statuses
 from tekclipse.dashboard.mission_state import mission_briefing
 from tekclipse.dashboard.mission_visuals import mission_console, impact_reasoning_html
 from tekclipse.dashboard.investigation import subsystem_panel, replay_panel, render_investigation, render_research_notes
+from tekclipse.dashboard.defense_panel import render_defense
+from tekclipse.dashboard.defense_service import load_evidence
+from tekclipse.security.evidence import safe_review, digest
 
 
 def render_security_panel(result, prefix="overview", view=None):
@@ -22,6 +26,7 @@ def render_security_panel(result, prefix="overview", view=None):
     security = result["security"]
     evidence = security["evidence"]
     scenario = result["scenario"]
+    st.toggle('Open cyber defense workspace', key='defense_open', help='Persistent findings, source investigation, manual simulated restrictions and incident reports.')
     if scenario == "E7":
         key = prefix + "_replay_second"
         if key not in st.session_state:
@@ -66,22 +71,27 @@ def render_security_panel(result, prefix="overview", view=None):
 
         at = ONSET + pd.Timedelta(seconds=second)
     else:
-        at = ONSET + pd.Timedelta(seconds=160)
+        second = st.number_input('Defense review / seconds after 12:00 UTC', 0, 180, 160,
+                           key='defense_review_second') if st.session_state.get('defense_open') else 160
+        at = ONSET + pd.Timedelta(seconds=second)
     window = security["window_seconds"]
     policy = security.get('correlation_policy', 'legacy')
     snapshot = trust_snapshot(evidence, at, window, correlation_policy=policy)
+    journal = load_evidence(result)
+    snapshot = safe_review(snapshot, journal[3])
     briefing = mission_briefing(snapshot, view)
     history = []
     if scenario == "E7":
         points = sorted({s for s, _ in STAGES if s <= second} | {second})
         history = [
-            trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window, correlation_policy=policy)
+            safe_review(trust_snapshot(evidence, ONSET + pd.Timedelta(seconds=s), window, correlation_policy=policy), journal[3])
             for s in points
         ]
     st.html(mission_console(snapshot, briefing, history, scenario=scenario))
     if scenario == 'E7':
         st.html(replay_panel(history))
     st.html(subsystem_panel(snapshot))
+    render_defense(snapshot, result, prefix, journal=journal)
     render_investigation(snapshot, prefix)
     render_research_notes()
     with st.expander(
@@ -199,5 +209,10 @@ def render_security_panel(result, prefix="overview", view=None):
                 "Continue monitoring; no high/critical response recommendation in this review window."
             )
         st.caption(
-            "SIMULATED RECOMMENDATIONS ONLY. No command is rejected, no source is isolated and no satellite action is executed."
+            "SIMULATED RECOMMENDATIONS ONLY. These suggestions execute no action. Use the cyber defense workspace for manual simulation admission policies; no real firewall or spacecraft is controlled."
         )
+    # Browser automation must wait for downloads as well as earlier visible cards.
+    ready = {k:v for k,v in st.session_state.items() if k.startswith('defense_') or k.startswith(prefix+'_investigation')}
+    ready.update(at=snapshot['at'],scenario=scenario)
+    family = html.escape(st.session_state.get(prefix+'_investigation_family','All observed evidence'),quote=True)
+    st.html(f'<span class="security-render-complete" data-token="{digest(ready)}" data-family="{family}"></span>')

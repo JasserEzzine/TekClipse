@@ -1,0 +1,392 @@
+{
+  "date": "2026-10-09",
+  "baseline_commit": "f4eef4a",
+  "safety_branch": "safety/phase-d-baseline-f4eef4a",
+  "baseline_tests": {
+    "tests": 72,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 273.704
+  },
+  "final_tests": {
+    "tests": 90,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 126.169
+  },
+  "preserved": {
+    "files": 125,
+    "changed": []
+  },
+  "checks": {
+    "bandit_findings": 0,
+    "bandit_errors": 0,
+    "credential_scan": {
+      "tool": "detect-secrets",
+      "findings": 0,
+      "scope": "Current tracked files including staged additions; not a repository-history scan."
+    },
+    "staged_diff_check": "passed"
+  },
+  "environment": {
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "scope": {
+    "journal": "11:57?12:03 UTC; supporting feature context from 11:56",
+    "actions": "Manual counterfactual admission; five-minute expiry; explicit reversal",
+    "identities": "Existing command logical sources and network IPs; no new attacker identities"
+  },
+  "resolved_issues": [
+    "Legacy R2 minute totals removed from causal presentation copies; original detector output retained.",
+    "Explicit browser widget reset after scenario/profile changes.",
+    "Time-chart legend/range-slider overlap and event heatmap date-axis interpretation corrected.",
+    "Browser checks wait for completed rerender before inspecting stages or filtered downloads."
+  ],
+  "limitations": [
+    "Synthetic research environment; no physical response, real attacker attribution or flight qualification.",
+    "Local journal is not authenticated/tamper-proof and requires durable hosting storage.",
+    "NET source association is aggregate context; manual restrictions may deny legitimate traffic.",
+    "Historical Trust and scientific metrics remain unchanged; no efficacy probability is claimed."
+  ],
+  "publication_authorization": "User explicitly requested GitHub push after completion on 2026-10-09; target origin/tekclipse-cloud. No separate hosting action.",
+  "browser_profiles": {
+    "profiles": [
+      {
+        "profile": "Original preview (default)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.2031513999972958
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 1.0779467999964254
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 0.618540600000415
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.7968794000044
+          },
+          {
+            "second": 120,
+            "trust": "9",
+            "seconds": 0.7947925999906147
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 1.9660559000039939
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 1.4406351000070572
+          }
+        ]
+      },
+      {
+        "profile": "Phase A calibrated (experimental)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.0893651000078535
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 0.683402999988175
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 1.2039958000095794
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.0162446000031196
+          },
+          {
+            "second": 120,
+            "trust": "9",
+            "seconds": 1.6081783999979962
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 1.64177469999413
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 1.4743651000026148
+          }
+        ]
+      },
+      {
+        "profile": "Phase A.2 hardened (experimental)",
+        "stages": [
+          {
+            "second": 20,
+            "trust": "80",
+            "seconds": 1.4755516000004718
+          },
+          {
+            "second": 45,
+            "trust": "58",
+            "seconds": 1.089286100002937
+          },
+          {
+            "second": 86,
+            "trust": "46",
+            "seconds": 1.0184024999907706
+          },
+          {
+            "second": 100,
+            "trust": "23",
+            "seconds": 1.1520617000060156
+          },
+          {
+            "second": 120,
+            "trust": "11",
+            "seconds": 1.1232531999994535
+          },
+          {
+            "second": 160,
+            "trust": "9",
+            "seconds": 0.8228509999898961
+          },
+          {
+            "second": 180,
+            "trust": "9",
+            "seconds": 1.8762854000087827
+          }
+        ]
+      }
+    ],
+    "responsive": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 1366,
+        "height": 768,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "horizontal_overflow": false
+      }
+    ],
+    "exports": [
+      {
+        "rows": 63,
+        "future_evidence": false,
+        "family_filter": true
+      }
+    ],
+    "errors": []
+  },
+  "browser_eight_tabs": {
+    "profile": "phase_a2",
+    "screens": [
+      {
+        "file": ".audit\\phase-d-eight-tabs\\e1-nominal-1920.png",
+        "width": 1920,
+        "height": 1080,
+        "overflow": {
+          "document": false,
+          "console": false
+        }
+      },
+      {
+        "file": ".audit\\phase-d-eight-tabs\\e1-nominal-1366.png",
+        "width": 1366,
+        "height": 768,
+        "overflow": {
+          "document": false,
+          "console": false
+        }
+      },
+      {
+        "file": ".audit\\phase-d-eight-tabs\\e7-critical-1920.png",
+        "width": 1920,
+        "height": 1080,
+        "overflow": {
+          "document": false,
+          "console": false
+        }
+      },
+      {
+        "file": ".audit\\phase-d-eight-tabs\\e7-critical-1366.png",
+        "width": 1366,
+        "height": 768,
+        "overflow": {
+          "document": false,
+          "console": false
+        }
+      }
+    ],
+    "stages": [
+      {
+        "second": 20,
+        "trust": "80\n/100",
+        "seconds": 1.4196528999891598,
+        "chain": [
+          "Unauthorized command"
+        ]
+      },
+      {
+        "second": 45,
+        "trust": "58\n/100",
+        "seconds": 1.112199299997883,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident"
+        ]
+      },
+      {
+        "second": 86,
+        "trust": "46\n/100",
+        "seconds": 1.8407176000036998,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident",
+          "Command burst"
+        ]
+      },
+      {
+        "second": 100,
+        "trust": "23\n/100",
+        "seconds": 0.6800677000137512,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident",
+          "Command burst",
+          "Telemetry limit"
+        ]
+      },
+      {
+        "second": 120,
+        "trust": "11\n/100",
+        "seconds": 2.089017699996475,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident",
+          "Command burst",
+          "Telemetry limit",
+          "Subsystem event"
+        ]
+      },
+      {
+        "second": 160,
+        "trust": "9\n/100",
+        "seconds": 2.133072299999185,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident",
+          "Command burst",
+          "Telemetry limit",
+          "Subsystem event",
+          "Telemetry deviation"
+        ]
+      },
+      {
+        "second": 180,
+        "trust": "9\n/100",
+        "seconds": 2.3604074000031687,
+        "chain": [
+          "Unauthorized command",
+          "Network anomaly",
+          "Multi-source incident",
+          "Command burst",
+          "Telemetry limit",
+          "Subsystem event",
+          "Telemetry deviation"
+        ]
+      }
+    ],
+    "tabs": [
+      "OVERVIEW",
+      "TELEMETRY",
+      "COMMANDS",
+      "NETWORK",
+      "EVENTS",
+      "ALERTS",
+      "SCENARIOS E1\u2013E7",
+      "ABOUT"
+    ],
+    "browser_errors": [],
+    "e7_launch_seconds": 0.9703198000061093,
+    "reset": "E1 restored; no stale E7 chain, impact or recommendations"
+  },
+  "browser_defense": {
+    "demos": [
+      {
+        "scenario": "E2",
+        "rejection": true,
+        "reversal": true
+      },
+      {
+        "scenario": "E3",
+        "later_commands_denied": 19,
+        "reversal": true
+      },
+      {
+        "scenario": "E7",
+        "stages": 7,
+        "later_flows_denied": 115,
+        "report": true,
+        "trust": 9,
+        "no_future_evidence": true
+      }
+    ],
+    "screens": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 1366,
+        "height": 768,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "horizontal_overflow": false
+      }
+    ],
+    "errors": []
+  }
+}

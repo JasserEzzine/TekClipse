@@ -1,0 +1,37 @@
+[
+  {
+    "event_id": "EV-dbfad98efa14a0a194d80c97",
+    "run_id": "RUN-04521facd158ac0267ca86b7",
+    "alert_id": "A-000957",
+    "timestamp": "2026-01-01T12:00:45+00:00",
+    "scenario": "E7",
+    "profile": "phase_a2",
+    "detector": "NET",
+    "category": "Network anomaly",
+    "severity": "HIGH",
+    "severity_policy": "Preserve detector severity: R1/R2/SYS CRITICAL; R3/ML WARNING; NET WARNING or HIGH according to its reason count. Not attack certainty.",
+    "source_ids": [
+      "10.0.0.15",
+      "203.0.113.27"
+    ],
+    "target_ids": [
+      "10.0.0.5",
+      "10.1.0.6"
+    ],
+    "asset_context": "SAT-01 / single-spacecraft simulation",
+    "subsystems": [
+      "Communications"
+    ],
+    "evidence": "9908.0 bytes/sec: 8.0x nominal median; threshold 7310.4; One-second traffic rise 1700.1; threshold 500.0; Previously unseen src_ip: 203.0.113.27; Previously unseen dst_ip: 10.0.0.5",
+    "record_ids": [
+      "RUN-04521facd158ac0267ca86b7:network:285",
+      "RUN-04521facd158ac0267ca86b7:network:286"
+    ],
+    "provenance": "All flows contributing to the anomalous second. Aggregate evidence does not identify which peer is malicious.",
+    "status": "Observed; not adjudicated",
+    "operator_response": [],
+    "incident_ids": [
+      "INC-001"
+    ]
+  }
+]

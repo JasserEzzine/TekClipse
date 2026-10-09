@@ -33,20 +33,20 @@ def style(fig, title="", height=350, time_axis=False):
     fig.update_layout(
         template="plotly_dark",
         title=dict(text=title, font=dict(family="Inter, sans-serif", size=15)),
-        height=height,
+        height=height + (75 if time_axis else 0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         colorway=COLORS,
-        margin=dict(l=35, r=25, t=55, b=35),
+        margin=dict(l=65, r=25, t=70 if time_axis else 55, b=155 if time_axis else 90),
         font=dict(family="Inter, sans-serif", color="#C3D2DD", size=12),
         hoverlabel=dict(
             bgcolor="#132b3d", font_family="JetBrains Mono, monospace", font_size=12
         ),
-        legend=dict(orientation="h", y=-0.18),
+        legend=dict(orientation="h", y=-0.60 if time_axis else -0.18, x=0, xanchor='left', yanchor='top'),
         uirevision=title,
     )
-    fig.update_xaxes(gridcolor="rgba(34,211,238,.10)", zeroline=False)
-    fig.update_yaxes(gridcolor="rgba(34,211,238,.10)", zeroline=False)
+    fig.update_xaxes(gridcolor="rgba(34,211,238,.10)", zeroline=False, automargin=True)
+    fig.update_yaxes(gridcolor="rgba(34,211,238,.10)", zeroline=False, automargin=True)
     if time_axis:
         fig.update_xaxes(
             rangeslider=dict(visible=True, thickness=0.055),
@@ -342,6 +342,9 @@ def network_charts(data):
         color="protocol",
         color_discrete_map=COLOR_MAP,
     )
+    donut.update_traces(textposition='inside',textinfo='label+percent',hovertemplate='%{label}: %{value} flow rows (%{percent})<extra></extra>')
+    bubble.update_layout(xaxis_title='Bytes (daily sum)',yaxis_title='Packets (daily sum)')
+    area.update_layout(yaxis_title='Mean traffic-rate units per second')
     return (
         style(area, "TRAFFIC RATE / PROTOCOL", 360, True),
         style(bubble, "DAILY FLOW TOTALS / CONNECTION-COUNT SUM", 400),
@@ -371,6 +374,8 @@ def event_charts(data, event_type="All"):
             colorbar=dict(title="Events"),
         )
     )
+    heat.update_yaxes(type='category', title='UTC date')
+    heat.update_xaxes(title='UTC hour',dtick=1)
     recent = events.tail(250)
     feed = px.scatter(
         recent,
@@ -380,6 +385,7 @@ def event_charts(data, event_type="All"):
         hover_data=["source", "details"],
         color_discrete_sequence=COLORS,
     )
+    feed.update_layout(showlegend=False)
     return style(heat, "EVENT DENSITY / DAY × UTC HOUR", 360), style(
         feed, "EVENT FEED / LATEST 250", 350, True
     )

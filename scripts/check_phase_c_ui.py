@@ -51,6 +51,7 @@ def main():
                 page.get_by_role('button',name='Next attack stage',exact=True).click()
                 page.get_by_text(f'REPLAY +{second:03d}s',exact=False).wait_for()
                 settle()
+                expect(page.locator('[data-stage-time]')).to_have_count(index+1)
                 times=page.locator('[data-stage-time]').evaluate_all('(els)=>els.map(e=>e.dataset.stageTime)')
                 require(len(times)==index+1,'Missing revealed stage')
                 boundary=f'2026-01-01T12:{second//60:02d}:{second%60:02d}+00:00'
@@ -66,6 +67,7 @@ def main():
                 page.locator('[data-testid="stRadio"]').get_by_text('Rule-based detections',exact=True).click()
                 expect(page.get_by_role('radio',name='Rule-based detections',exact=True)).to_be_checked()
                 settle()
+                expect(page.locator('.security-render-complete')).to_have_attribute('data-family','Rule-based detections')
                 expect(page.locator('.analyst-evidence')).to_contain_text('Rule-based detections')
                 page.locator('.analyst-evidence').screenshot(path=str(args.output/'analyst-evidence.png'))
                 with page.expect_download() as exported:

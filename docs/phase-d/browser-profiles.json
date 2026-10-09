@@ -1,0 +1,154 @@
+{
+  "profiles": [
+    {
+      "profile": "Original preview (default)",
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80",
+          "seconds": 1.2031513999972958
+        },
+        {
+          "second": 45,
+          "trust": "58",
+          "seconds": 1.0779467999964254
+        },
+        {
+          "second": 86,
+          "trust": "46",
+          "seconds": 0.618540600000415
+        },
+        {
+          "second": 100,
+          "trust": "23",
+          "seconds": 1.7968794000044
+        },
+        {
+          "second": 120,
+          "trust": "9",
+          "seconds": 0.7947925999906147
+        },
+        {
+          "second": 160,
+          "trust": "9",
+          "seconds": 1.9660559000039939
+        },
+        {
+          "second": 180,
+          "trust": "9",
+          "seconds": 1.4406351000070572
+        }
+      ]
+    },
+    {
+      "profile": "Phase A calibrated (experimental)",
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80",
+          "seconds": 1.0893651000078535
+        },
+        {
+          "second": 45,
+          "trust": "58",
+          "seconds": 0.683402999988175
+        },
+        {
+          "second": 86,
+          "trust": "46",
+          "seconds": 1.2039958000095794
+        },
+        {
+          "second": 100,
+          "trust": "23",
+          "seconds": 1.0162446000031196
+        },
+        {
+          "second": 120,
+          "trust": "9",
+          "seconds": 1.6081783999979962
+        },
+        {
+          "second": 160,
+          "trust": "9",
+          "seconds": 1.64177469999413
+        },
+        {
+          "second": 180,
+          "trust": "9",
+          "seconds": 1.4743651000026148
+        }
+      ]
+    },
+    {
+      "profile": "Phase A.2 hardened (experimental)",
+      "stages": [
+        {
+          "second": 20,
+          "trust": "80",
+          "seconds": 1.4755516000004718
+        },
+        {
+          "second": 45,
+          "trust": "58",
+          "seconds": 1.089286100002937
+        },
+        {
+          "second": 86,
+          "trust": "46",
+          "seconds": 1.0184024999907706
+        },
+        {
+          "second": 100,
+          "trust": "23",
+          "seconds": 1.1520617000060156
+        },
+        {
+          "second": 120,
+          "trust": "11",
+          "seconds": 1.1232531999994535
+        },
+        {
+          "second": 160,
+          "trust": "9",
+          "seconds": 0.8228509999898961
+        },
+        {
+          "second": 180,
+          "trust": "9",
+          "seconds": 1.8762854000087827
+        }
+      ]
+    }
+  ],
+  "responsive": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "horizontal_overflow": false
+    }
+  ],
+  "exports": [
+    {
+      "rows": 63,
+      "future_evidence": false,
+      "family_filter": true
+    }
+  ],
+  "errors": []
+}

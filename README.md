@@ -277,6 +277,12 @@ A run may take time while generating data or fitting the model. Cached results m
 
 See the [official deployment instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy). The hosting service runs independently of your computer. Free hosting may sleep while idle and is subject to provider resource limits; cold startup is not instant. Temporary host storage can be lost, after which the app regenerates its simulation.
 
+## Cybersecurity defense and investigation (Phase D)
+
+Phase D adds a **cyber defense workspace** within the existing Overview and scenario briefing. It records detector findings with raw evidence references, supports source/incident investigation, and exports security logs and incident reports as CSV, JSON or HTML. Manual simulated policies can reject unauthorized commands, block a recorded network source or quarantine a command station; later admission decisions and reversals are audited. These policies preserve the original observations and Trust Score and do not control a real firewall or satellite.
+
+Select **Phase A.2 hardened (experimental)**, run E2/E3/E7, and enable **Open cyber defense workspace**. Follow the [three jury demos](docs/phase-d/demo.md), [launch and handover instructions](docs/phase-d/handover.md), and [implementation report](docs/phase-d/report.md). The persistent local journal is `results/security-evidence.sqlite`; the UI covers the noon mission review interval. Ephemeral hosting may lose this file. Each session has separate response policy state; authentication and tamper-proof forensic storage are outside this prototype's scope.
+
 ## Security and data handling
 
 - No external API calls, cloud credentials or satellite credentials are required by the dashboard.
@@ -302,6 +308,7 @@ tekclipse/pipeline/        Original detectors plus network/correlation/trust/res
 tekclipse/dashboard/      UI, Plotly charts, caching and preview persistence
 tekclipse/evaluation/     Explicit held-out evaluation and legacy compatibility API
 tekclipse/storage/        CSV/SQLite/JSON result helpers
+tekclipse/security/       Evidence journal, simulated admission policies, incident reports
 scripts/                  Generation and preparation utilities
 tests/                    Data, scenario, hosting and regression checks
 ```

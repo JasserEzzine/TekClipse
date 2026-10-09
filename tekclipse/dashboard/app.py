@@ -118,6 +118,8 @@ hours = days * 24
 token = dataset_token(hours)
 run_key = (hours, token, profile)
 if st.session_state.get("run_key") != run_key:
+    from tekclipse.dashboard.defense_service import reset_defense
+    reset_defense()
     st.session_state["run_key"] = run_key
     for state_key in ('validated_evaluation', 'evaluation_key', 'pending_evaluation',
                       'pending_scenario', 'overview_replay_second', 'scenarios_replay_second',
@@ -200,6 +202,8 @@ def plot(fig, key):
 
 def run(scenario_name):
     # Widget callbacks run before the script: process once before charts are built.
+    from tekclipse.dashboard.defense_service import reset_defense
+    reset_defense()
     st.session_state["pending_scenario"] = scenario_name
     st.session_state["mission_tabs"] = "SCENARIOS E1–E7"
     st.session_state["guided_demo"] = False
@@ -529,6 +533,7 @@ if tabs[3].open:
         st.caption(
             "Traffic rate uses simulator units. Bubble size sums connection_count samples; it is not a count of distinct connections."
         )
+        st.caption('Protocol shares count flow rows, not packets or bytes. The nominal generator alternates TCP and UDP every second, producing exactly 50% each over whole-hour datasets. E4 adds TCP rows; E7 adds UDP rows. These proportions are a simulation assumption, not measured Internet traffic.')
         st.caption(
             "NET alerts compare per-second packet/byte totals, traffic rises and peer/protocol novelty with an untouched nominal baseline."
         )
